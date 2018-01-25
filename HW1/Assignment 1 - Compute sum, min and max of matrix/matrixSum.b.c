@@ -131,6 +131,36 @@ int main(int argc, char *argv[])
 	start_time = read_timer();
 	for (l = 0; l < numWorkers; l++)
 		pthread_create(&workerid[l], &attr, Worker, (void *)l);
+	for (l = 0; l < numWorkers; l++)
+		pthread_join(workerid[l], NULL);
+
+	int total = 0;
+	struct element max = max_arr[0];
+	struct element min = min_arr[0];
+	for (i = 0; i < numWorkers; i++)
+	{
+		total += sums[i];
+		if (max.val < max_arr[i].val)
+		{
+			max.i_pos = max_arr[i].i_pos;
+			max.j_pos = max_arr[i].j_pos;
+			max.val = max_arr[i].val;
+		}
+		if (min.val > min_arr[i].val)
+		{
+			min.i_pos = min_arr[i].i_pos;
+			min.j_pos = min_arr[i].j_pos;
+			min.val = min_arr[i].val;
+		}
+	}
+	/* get end time */
+	end_time = read_timer();
+	/* print results */
+	printf("The total is %d\n", total);
+	printf("The max element is %d, at position: (%d;%d)\n", max.val, max.j_pos + 1, max.i_pos + 1);
+	printf("The min element is %d, at position: (%d;%d)\n", min.val, min.j_pos + 1, min.i_pos + 1);
+	printf("The execution time is %g sec\n", end_time - start_time);
+
 	pthread_exit(NULL);
 }
 
@@ -150,8 +180,8 @@ void *Worker(void *arg)
 
 	/* sum values in my strip */
 	total = 0;
-	struct element max = {.i_pos = first, .j_pos = 0, .val = matrix[first][0]};
-	struct element min = {.i_pos = first, .j_pos = 0, .val = matrix[first][0]};
+	struct element max = {.i_pos = first, .j_pos = 0, .val = matrix[0][0]};
+	struct element min = {.i_pos = first, .j_pos = 0, .val = matrix[0][0]};
 	for (i = first; i <= last; i++)
 	{
 		for (j = 0; j < size; j++)
@@ -174,34 +204,5 @@ void *Worker(void *arg)
 	sums[myid] = total;
 	max_arr[myid] = max;
 	min_arr[myid] = min;
-	Barrier();
-	if (myid == 0)
-	{
-		total = 0;
-		struct element max = max_arr[0];
-		struct element min = min_arr[0];
-		for (i = 0; i < numWorkers; i++)
-		{
-			total += sums[i];
-			if (max.val < max_arr[i].val)
-			{
-				max.i_pos = max_arr[i].i_pos;
-				max.j_pos = max_arr[i].j_pos;
-				max.val = max_arr[i].val;
-			}
-			if (min.val > min_arr[i].val)
-			{
-				min.i_pos = min_arr[i].i_pos;
-				min.j_pos = min_arr[i].j_pos;
-				min.val = min_arr[i].val;
-			}
-		}
-		/* get end time */
-		end_time = read_timer();
-		/* print results */
-		printf("The total is %d\n", total);
-		printf("The max element is %d, at position: (%d;%d)\n", max.val, max.i_pos + 1, max.j_pos + 1);
-		printf("The min element is %d, at position: (%d;%d)\n", min.val, min.i_pos + 1, min.j_pos + 1);
-		printf("The execution time is %g sec\n", end_time - start_time);
-	}
+	pthread_exit(NULL);
 }
