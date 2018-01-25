@@ -61,6 +61,7 @@ double start_time, end_time;  /* start and end times */
 int size, stripSize;		  /* assume size is multiple of numWorkers */
 int sums[MAXWORKERS];		  /* partial sums */
 int matrix[MAXSIZE][MAXSIZE]; /* matrix */
+int max_arr[MAXSIZE];
 
 void *Worker(void *);
 
@@ -97,6 +98,7 @@ int main(int argc, char *argv[])
 		{
 			matrix[i][j] = rand() % 99;
 		}
+		max_arr[i] = matrix[i][0];
 	}
 
 		/* print the matrix */
@@ -137,19 +139,29 @@ void *Worker(void *arg)
 	/* sum values in my strip */
 	total = 0;
 	for (i = first; i <= last; i++)
+	{
 		for (j = 0; j < size; j++)
+		{
 			total += matrix[i][j];
+			max_arr[i] = (max_arr[i] < matrix[i][j]) ? matrix[i][j] : max_arr[i];
+		}
+	}
 	sums[myid] = total;
 	Barrier();
 	if (myid == 0)
 	{
 		total = 0;
+		int max = max_arr[0];
 		for (i = 0; i < numWorkers; i++)
+		{
 			total += sums[i];
+			max = (max < max_arr[i]) ? max_arr[i] : max;
+		}
 		/* get end time */
 		end_time = read_timer();
 		/* print results */
 		printf("The total is %d\n", total);
+		printf("The max element is %d\n", max);
 		printf("The execution time is %g sec\n", end_time - start_time);
 	}
 }
