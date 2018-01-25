@@ -27,6 +27,13 @@ pthread_cond_t go;		 /* condition variable for leaving */
 int numWorkers;			 /* number of workers */
 int numArrived = 0;		 /* number who have arrived */
 
+struct element
+{
+	int i_pos;
+	int j_pos;
+	int val;
+};
+
 /* a reusable counter barrier */
 void Barrier()
 {
@@ -57,12 +64,12 @@ double read_timer()
 	return (end.tv_sec - start.tv_sec) + 1.0e-6 * (end.tv_usec - start.tv_usec);
 }
 
-double start_time, end_time;  /* start and end times */
-int size, stripSize;		  /* assume size is multiple of numWorkers */
-int sums[MAXWORKERS];		  /* partial sums */
-int matrix[MAXSIZE][MAXSIZE]; /* matrix */
-int max_arr[MAXSIZE];		  /* every rows max element */
-int min_arr[MAXSIZE];		  /* every rows min element */
+double start_time, end_time;	 /* start and end times */
+int size, stripSize;			 /* assume size is multiple of numWorkers */
+int sums[MAXWORKERS];			 /* partial sums */
+int matrix[MAXSIZE][MAXSIZE];	/* matrix */
+struct element max_arr[MAXSIZE]; /* every rows max element */
+struct element min_arr[MAXSIZE]; /* every rows min element */
 
 void *Worker(void *);
 
@@ -99,8 +106,12 @@ int main(int argc, char *argv[])
 		{
 			matrix[i][j] = rand() % 99;
 		}
-		max_arr[i] = matrix[i][0];
-		min_arr[i] = matrix[i][0];
+		max_arr[i].i_pos = i;
+		max_arr[i].j_pos = 0;
+		max_arr[i].val = matrix[i][0];
+		min_arr[i].i_pos = i;
+		min_arr[i].j_pos = 0;
+		min_arr[i].val = matrix[i][0];
 	}
 
 		/* print the matrix */
@@ -128,8 +139,7 @@ int main(int argc, char *argv[])
 void *Worker(void *arg)
 {
 	long myid = (long)arg;
-	int total, i, j, first, last, max, min;
-
+	int total, i, j, first, last;
 #ifdef DEBUG
 	printf("worker %d (pthread id %d) has started\n", myid, pthread_self());
 #endif
@@ -140,15 +150,25 @@ void *Worker(void *arg)
 
 	/* sum values in my strip */
 	total = 0;
-	max = matrix[first][0];
-	min = matrix[first][0];
+	struct element max = {.i_pos = first, .j_pos = 0, .val = matrix[first][0]};
+	struct element min = {.i_pos = first, .j_pos = 0, .val = matrix[first][0]};
 	for (i = first; i <= last; i++)
 	{
 		for (j = 0; j < size; j++)
 		{
 			total += matrix[i][j];
-			max = (max < matrix[i][j]) ? matrix[i][j] : max;
-			min = (min > matrix[i][j]) ? matrix[i][j] : min;
+			if (max.val < matrix[i][j])
+			{
+				max.i_pos = i;
+				max.j_pos = j;
+				max.val = matrix[i][j];
+			}
+			if (min.val > matrix[i][j])
+			{
+				min.i_pos = i;
+				min.j_pos = j;
+				min.val = matrix[i][j];
+			}
 		}
 	}
 	sums[myid] = total;
@@ -158,20 +178,30 @@ void *Worker(void *arg)
 	if (myid == 0)
 	{
 		total = 0;
-		int max = max_arr[0];
-		int min = min_arr[0];
+		struct element max = max_arr[0];
+		struct element min = min_arr[0];
 		for (i = 0; i < numWorkers; i++)
 		{
 			total += sums[i];
-			max = (max < max_arr[i]) ? max_arr[i] : max;
-			min = (min > min_arr[i]) ? min_arr[i] : min;
+			if (max.val < max_arr[i].val)
+			{
+				max.i_pos = max_arr[i].i_pos;
+				max.j_pos = max_arr[i].j_pos;
+				max.val = max_arr[i].val;
+			}
+			if (min.val > min_arr[i].val)
+			{
+				min.i_pos = min_arr[i].i_pos;
+				min.j_pos = min_arr[i].j_pos;
+				min.val = min_arr[i].val;
+			}
 		}
 		/* get end time */
 		end_time = read_timer();
 		/* print results */
 		printf("The total is %d\n", total);
-		printf("The max element is %d\n", max);
-		printf("The min element is %d\n", min);
+		printf("The max element is %d, at position: (%d;%d)\n", max.val, max.i_pos + 1, max.j_pos + 1);
+		printf("The min element is %d, at position: (%d;%d)\n", min.val, min.i_pos + 1, min.j_pos + 1);
 		printf("The execution time is %g sec\n", end_time - start_time);
 	}
 }
