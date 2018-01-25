@@ -90,12 +90,11 @@ int main(int argc, char *argv[])
 	stripSize = size / numWorkers;
 
 	/* initialize the matrix */
-	srand(time(NULL));
 	for (i = 0; i < size; i++)
 	{
 		for (j = 0; j < size; j++)
 		{
-			matrix[i][j] = rand() % 99;
+			matrix[i][j] = 1; //rand()%99;
 		}
 	}
 
