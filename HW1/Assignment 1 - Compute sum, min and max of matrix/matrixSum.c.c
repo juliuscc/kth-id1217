@@ -25,29 +25,16 @@
 pthread_mutex_t barrier; /* mutex lock for the barrier */
 pthread_cond_t go;		 /* condition variable for leaving */
 int numWorkers;			 /* number of workers */
-int numArrived = 0;		 /* number who have arrived */
+int nextRow = 0;		 /* For bag of tasks */
 
-struct element
+typedef struct
 {
-	int i_pos;
-	int j_pos;
-	int val;
-};
-
-/* a reusable counter barrier */
-void Barrier()
-{
-	pthread_mutex_lock(&barrier);
-	numArrived++;
-	if (numArrived == numWorkers)
-	{
-		numArrived = 0;
-		pthread_cond_broadcast(&go);
-	}
-	else
-		pthread_cond_wait(&go, &barrier);
-	pthread_mutex_unlock(&barrier);
-}
+	int total;
+	int max_i;
+	int max_j;
+	int min_i;
+	int min_j;
+} result;
 
 /* timer */
 double read_timer()
@@ -64,13 +51,9 @@ double read_timer()
 	return (end.tv_sec - start.tv_sec) + 1.0e-6 * (end.tv_usec - start.tv_usec);
 }
 
-double start_time, end_time;	 /* start and end times */
-int size, stripSize;			 /* assume size is multiple of numWorkers */
-int sums[MAXWORKERS];			 /* partial sums */
-int matrix[MAXSIZE][MAXSIZE];	/* matrix */
-struct element max_arr[MAXSIZE]; /* every rows max element */
-struct element min_arr[MAXSIZE]; /* every rows min element */
-int nextRow = 0;				 /* For bag of tasks */
+double start_time, end_time;  /* start and end times */
+int size, stripSize;		  /* assume size is multiple of numWorkers */
+int matrix[MAXSIZE][MAXSIZE]; /* matrix */
 
 void *Worker(void *);
 
@@ -107,12 +90,6 @@ int main(int argc, char *argv[])
 		{
 			matrix[i][j] = rand() % 99;
 		}
-		max_arr[i].i_pos = i;
-		max_arr[i].j_pos = 0;
-		max_arr[i].val = matrix[i][0];
-		min_arr[i].i_pos = i;
-		min_arr[i].j_pos = 0;
-		min_arr[i].val = matrix[i][0];
 	}
 
 		/* print the matrix */
@@ -130,36 +107,42 @@ int main(int argc, char *argv[])
 
 	/* do the parallel work: create the workers */
 	start_time = read_timer();
+	result mainResult = {
+		.total = 0,
+		.max_i = 0,
+		.max_j = 0,
+		.min_i = 0,
+		.min_j = 0};
+	result *res;
 	for (l = 0; l < numWorkers; l++)
 		pthread_create(&workerid[l], &attr, Worker, (void *)l);
 	for (l = 0; l < numWorkers; l++)
-		pthread_join(workerid[l], NULL);
-
-	int total = 0;
-	struct element max = max_arr[0];
-	struct element min = min_arr[0];
-	for (i = 0; i < size; i++)
 	{
-		total += sums[i];
-		if (max.val < max_arr[i].val)
+		pthread_join(workerid[l], (void **)&res);
+		mainResult.total += res->total;
+		if (matrix[res->max_i][res->max_j] > matrix[mainResult.max_i][mainResult.max_j])
 		{
-			max.i_pos = max_arr[i].i_pos;
-			max.j_pos = max_arr[i].j_pos;
-			max.val = max_arr[i].val;
+			mainResult.max_i = res->max_i;
+			mainResult.max_j = res->max_j;
 		}
-		if (min.val > min_arr[i].val)
+		if (matrix[res->min_i][res->min_j] < matrix[mainResult.min_i][mainResult.min_j])
 		{
-			min.i_pos = min_arr[i].i_pos;
-			min.j_pos = min_arr[i].j_pos;
-			min.val = min_arr[i].val;
+			mainResult.min_i = res->min_i;
+			mainResult.min_j = res->min_j;
 		}
+		free(res);
 	}
+
 	/* get end time */
 	end_time = read_timer();
 	/* print results */
+	int total = mainResult.total;
+	int max = matrix[mainResult.max_i][mainResult.max_j];
+	int min = matrix[mainResult.min_i][mainResult.min_j];
+
 	printf("The total is %d\n", total);
-	printf("The max element is %d, at position: (%d;%d)\n", max.val, max.j_pos + 1, max.i_pos + 1);
-	printf("The min element is %d, at position: (%d;%d)\n", min.val, min.j_pos + 1, min.i_pos + 1);
+	printf("The max element is %d, at position: (%d;%d)\n", max, mainResult.max_j + 1, mainResult.max_i + 1);
+	printf("The min element is %d, at position: (%d;%d)\n", min, mainResult.min_j + 1, mainResult.min_i + 1);
 	printf("The execution time is %g sec\n", end_time - start_time);
 
 	pthread_exit(NULL);
@@ -170,37 +153,44 @@ int main(int argc, char *argv[])
 void *Worker(void *arg)
 {
 	long myid = (long)arg;
-	int total, j;
+	int j, row;
+#ifdef DEBUG
+	printf("worker %d (pthread id %d) has started\n", myid, pthread_self());
+#endif
 
-	int row;
+	/* sum values in my strip */
+	result *res = malloc(sizeof(result));
+
+	res->total = 0;
+	res->max_i = 0;
+	res->max_j = 0;
+	res->min_i = 0;
+	res->min_j = 0;
+
+	int max = matrix[0][0];
+	int min = matrix[0][0];
+
 	while (1)
 	{
 		row = __sync_fetch_and_add(&nextRow, 1);
 		if (row >= size)
-			pthread_exit(NULL);
+			pthread_exit((void *)res);
 
-		/* sum values in my strip */
-		total = 0;
-		struct element max = {.i_pos = row, .j_pos = 0, .val = matrix[row][0]};
-		struct element min = {.i_pos = row, .j_pos = 0, .val = matrix[row][0]};
 		for (j = 0; j < size; j++)
 		{
-			total += matrix[row][j];
-			if (max.val < matrix[row][j])
+			res->total += matrix[row][j];
+			if (max < matrix[row][j])
 			{
-				max.i_pos = row;
-				max.j_pos = j;
-				max.val = matrix[row][j];
+				res->max_i = row;
+				res->max_j = j;
+				max = matrix[row][j];
 			}
-			if (min.val > matrix[row][j])
+			if (min > matrix[row][j])
 			{
-				min.i_pos = row;
-				min.j_pos = j;
-				min.val = matrix[row][j];
+				res->min_i = row;
+				res->min_j = j;
+				min = matrix[row][j];
 			}
 		}
-		sums[row] = total;
-		max_arr[row] = max;
-		min_arr[row] = min;
 	}
 }
