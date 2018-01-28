@@ -25,7 +25,6 @@
 pthread_mutex_t barrier; /* mutex lock for the barrier */
 pthread_cond_t go;		 /* condition variable for leaving */
 int numWorkers;			 /* number of workers */
-int numArrived = 0;		 /* number who have arrived */
 
 typedef struct
 {
