@@ -151,4 +151,5 @@ void *Worker(void *arg)
 		printf("The total is %d\n", total);
 		printf("The execution time is %g sec\n", end_time - start_time);
 	}
+	return NULL;
 }

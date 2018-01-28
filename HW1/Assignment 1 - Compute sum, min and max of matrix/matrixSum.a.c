@@ -204,4 +204,5 @@ void *Worker(void *arg)
 		printf("The min element is %d, at position: (%d;%d)\n", min.val, min.i_pos + 1, min.j_pos + 1);
 		printf("The execution time is %g sec\n", end_time - start_time);
 	}
+	return NULL;
 }
