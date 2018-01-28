@@ -2,9 +2,12 @@ CC = gcc
 LIBS = -lpthread -lm
 CFLAGS = -O3
 
-TARGETS = matrixSum matrixSum.a matrixSum.b matrixSum.c
+TARGETS = matrixSum.original matrixSum.a matrixSum.b matrixSum.c
 
-matrixSum: matrixSum.c
+all : $(TARGETS)
+.PHONY : all
+
+matrixSum.original: matrixSum.original.c
 	$(CC) $(CFLAGS) -o $@ $@.c $(LIBS)
 
 matrixSum.a: matrixSum.a.c
