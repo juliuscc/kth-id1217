@@ -151,10 +151,15 @@ int main(int argc, char *argv[])
 	/* measure end time */
 	end_time = read_timer();
 
-	/* print result */
+/* print result */
+#ifndef STRIPPEDPRINT
 	printf("Specified epsilon:  %g\n", epsilon);
 	printf("pi: %f10\n", pi);
 	printf("The execution time is %g sec\n", end_time - start_time);
+#endif
+#ifdef STRIPPEDPRINT
+	printf("%g\n", end_time - start_time);
+#endif
 
 	return 0;
 }
