@@ -21,5 +21,13 @@ matrixSum.b: matrixSum.b.c
 matrixSum.c: matrixSum.c.c
 	$(CC) $(CFLAGS) -D $(DEFINES) -o $@.o $@.c $(LIBS)
 
+benchmark: $(TARGETS)
+	rm -rf results \
+	&& mkdir results \
+	&& ./benchmark.sh ./matrixSum.original.o results/original.results \
+	&& ./benchmark.sh ./matrixSum.a.o results/a.results \
+	&& ./benchmark.sh ./matrixSum.b.o results/b.results \
+	&& ./benchmark.sh ./matrixSum.c.o results/c.results
+
 clean:
 	rm -f *.o *.exe $(TARGETS)
