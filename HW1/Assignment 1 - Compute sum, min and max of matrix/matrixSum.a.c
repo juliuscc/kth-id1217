@@ -199,10 +199,15 @@ void *Worker(void *arg)
 		/* get end time */
 		end_time = read_timer();
 		/* print results */
+#ifndef STRIPPEDPRINT
 		printf("The total is %d\n", total);
 		printf("The max element is %d, at position: (%d;%d)\n", max.val, max.i_pos + 1, max.j_pos + 1);
 		printf("The min element is %d, at position: (%d;%d)\n", min.val, min.i_pos + 1, min.j_pos + 1);
 		printf("The execution time is %g sec\n", end_time - start_time);
+#endif
+#ifdef STRIPPEDPRINT
+		printf("%g\n", end_time - start_time);
+#endif
 	}
 	return NULL;
 }

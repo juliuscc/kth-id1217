@@ -148,8 +148,13 @@ void *Worker(void *arg)
 		/* get end time */
 		end_time = read_timer();
 		/* print results */
+#ifndef STRIPPEDPRINT
 		printf("The total is %d\n", total);
 		printf("The execution time is %g sec\n", end_time - start_time);
+#endif
+#ifdef STRIPPEDPRINT
+		printf("%g\n", end_time - start_time);
+#endif
 	}
 	return NULL;
 }
