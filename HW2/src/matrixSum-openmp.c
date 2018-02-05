@@ -12,7 +12,7 @@ double start_time, end_time;
 
 #include <stdio.h>
 #define MAXSIZE 10000 /* maximum matrix size */
-#define MAXWORKERS 8  /* maximum number of workers */
+#define MAXWORKERS 24 /* maximum number of workers */
 
 int numWorkers;
 int size;
