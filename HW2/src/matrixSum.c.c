@@ -86,6 +86,39 @@ double oneIteration(int numWorkers, int size)
 	return end_time - start_time;
 }
 
+void swap(double *xp, double *yp)
+{
+	double temp = *xp;
+	*xp = *yp;
+	*yp = temp;
+}
+
+// An optimized version of Bubble Sort
+void sort(double arr[])
+{
+	int i, j;
+	bool swapped;
+
+	int n = sizeof(arr)/sizeof(arr[0])
+
+	for (i = 0; i < n - 1; i++)
+	{
+		swapped = false;
+		for (j = 0; j < n - i - 1; j++)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				swap(&arr[j], &arr[j + 1]);
+				swapped = true;
+			}
+		}
+
+		// IF no two elements were swapped by inner loop, then break
+		if (swapped == false)
+			break;
+	}
+}
+
 /* read command line, initialize, and create threads */
 int main(int argc, char *argv[])
 {
@@ -98,13 +131,15 @@ int main(int argc, char *argv[])
 	if (numWorkers > MAXWORKERS)
 		numWorkers = MAXWORKERS;
 
-	double total = 0;
+	int iterations = 10;
+	double times[iterations];
 	int i;
-	for(i = 0; i < 10; i++){
-		double time = oneIteration(numWorkers, size);
-		total += time;
+	for(i = 0; i < iterations; i++){
+		times[i] = oneIteration(numWorkers, size);
 	}
-	double mean = total / 10;
+	// sort times
+	sort(times)
+	double median = times[iterations/2];
 
-	printf("it took %g seconds\n", mean);
+	printf("it took %g seconds\n", median);
 }
