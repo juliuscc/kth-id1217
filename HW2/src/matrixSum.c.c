@@ -99,11 +99,12 @@ int main(int argc, char *argv[])
 		numWorkers = MAXWORKERS;
 
 	double total = 0;
-	for(int i = 0; i < 10; i++){
+	int i;
+	for(i = 0; i < 10; i++){
 		double time = oneIteration(numWorkers, size);
 		total += time;
 	}
-	double mean = total / 10
+	double mean = total / 10;
 
 	printf("it took %g seconds\n", mean);
 }
