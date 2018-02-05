@@ -69,18 +69,18 @@ static int partition(int low, int high, double arr[])
 /* Parallel code for quick sort */
 static void parallel_quicksort(int pivot, int high, double *list, int lower_bound)
 {
-	if (pivot >= high)
-		return;
+	// 	if (pivot >= high)
+	// 		return;
 
-	if (high - pivot < lower_bound)
-		return insertionSort(list, high - pivot);
+	// 	if (high - pivot < lower_bound)
+	// 		return insertionSort(list, high - pivot);
 
-	int mid = partition(pivot, high, list);
+	// 	int mid = partition(pivot, high, list);
 
-#pragma omp task
-	parallel_quicksort(pivot, mid - 1, list, lower_bound);
-#pragma omp task
-	parallel_quicksort(mid + 1, high, list, lower_bound);
+	// #pragma omp task
+	// 	parallel_quicksort(pivot, mid - 1, list, lower_bound);
+	// #pragma omp task
+	// 	parallel_quicksort(mid + 1, high, list, lower_bound);
 }
 
 /* Main: sets up all parameters */
