@@ -20,7 +20,7 @@ int size;
 int matrix[MAXSIZE][MAXSIZE];
 void *Worker(void *);
 
-double oneIteration(int arr[])
+double oneIteration()
 {
 	int i, j, total = 0;
 
@@ -41,13 +41,13 @@ double oneIteration(int arr[])
 		for (i = 0; i < size; i++)
 			for (j = 0; j < size; j++)
 			{
-				total += arr[i][j];
-				if (arr[i][j] > arr[max_i][max_j])
+				total += matrix[i][j];
+				if (matrix[i][j] > matrix[max_i][max_j])
 				{
 					max_i = i;
 					max_j = j;
 				}
-				if (arr[i][j] < arr[min_i][min_j])
+				if (matrix[i][j] < matrix[min_i][min_j])
 				{
 					min_i = i;
 					min_j = j;
@@ -55,12 +55,12 @@ double oneIteration(int arr[])
 			}
 #pragma omp critical
 		{
-			if (arr[max_i][max_j] > arr[max_i_shared][max_j_shared])
+			if (matrix[max_i][max_j] > matrix[max_i_shared][max_j_shared])
 			{
 				max_i_shared = max_i;
 				max_j_shared = max_j;
 			}
-			if (arr[min_i][min_j] > arr[min_i_shared][min_j_shared])
+			if (matrix[min_i][min_j] > matrix[min_i_shared][min_j_shared])
 			{
 				min_i_shared = min_i;
 				min_j_shared = min_j;
@@ -125,9 +125,8 @@ double medianTime(int numWorkers, int size)
 
 	int iterations = 10;
 	double times[iterations];
-	int i;
 	for(i = 0; i < iterations; i++){
-		times[i] = oneIteration(matrix);
+		times[i] = oneIteration();
 	}
 	// sort times
 	sort(times);
