@@ -17,7 +17,7 @@ double copy(double mainList[], double copyList[])
 	int i;
 	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
 	{
-		printf("%f, ", mainList[i]);
+		printf("%f, ", mainList[0]);
 		// copyList[i] = mainList[i];
 	}
 }
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
 	/* Keep original list untouched */
 	double copyList[length];
-	copy(mainList, copyList);
+	copy(&mainList, &copyList);
 
 	// #ifdef VERBOSE
 	// 	printf("Unsorted list: [");
