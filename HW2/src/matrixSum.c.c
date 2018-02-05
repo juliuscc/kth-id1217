@@ -12,7 +12,7 @@
 double start_time, end_time;
 
 #include <stdio.h>
-#define MAXSIZE 100000 /* maximum matrix size */
+#define MAXSIZE 10000 /* maximum matrix size */
 #define MAXWORKERS 24 /* maximum number of workers */
 
 int numWorkers;
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
 	/* workers and size array */
 	int workers[] = {1, 2, 4, 8, 16, 24};
-	int size[] = {1000, 10000, 100000};
+	int size[] = {100, 1000, 10000};
 
 	int i, j;
 	for(i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
