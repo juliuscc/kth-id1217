@@ -149,12 +149,20 @@ int main(int argc, char *argv[])
 	int workers[] = {1, 2, 4, 8, 16, 24};
 	int size[] = {100, 1000, 10000};
 
+	printf("Workers = [1, 2, 4, 8, 16, 24]\n");
+	printf("Sizes of matrix = [100, 1000, 10000]\n");
+	printf("Table:\n")
+	printf("|Workers\t|100\t|1000\t|10000\t|\n")
+
 	int i, j;
 	for(i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
 	{
+		printf("|%d", workers[i]);
 		for(j = 0; j < sizeof(size) / sizeof(size[0]); j++)
 		{
-			printf("Median time for matrix of size: %d, and with %d workers is: %g\n", size[j], workers[i], medianTime(workers[i], size[j]));
+			printf("|%g", medianTime(workers[i], size[j]));
+			// printf("Median time for matrix of size: %d, and with %d workers is: %g\n", size[j], workers[i], medianTime(workers[i], size[j]));
 		}
+		printf("|\n");
 	}
 }
