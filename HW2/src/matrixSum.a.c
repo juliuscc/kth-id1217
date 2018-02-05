@@ -46,8 +46,14 @@ int main(int argc, char *argv[])
 		//	  printf(" ]\n");
 	}
 
-	int max_i = max_j = min_i = min_j = 0;
-	int max_i_shared = max_j_shared = min_i_shared = min_j_shared = 0;
+	int max_i = 0;
+	int max_j = 0;
+	int min_i = 0;
+	int min_j = 0;
+	int max_i_shared = 0;
+	int max_j_shared = 0;
+	int min_i_shared = 0;
+	int min_j_shared = 0;
 
 	start_time = omp_get_wtime();
 
