@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
 	{
 		for(j = 0; j < sizeof(size) / sizeof(size[0]); j++)
 		{
-			printf("Median time for matrix of size: %d, and with %d workers is: %d\n", size[j], workers[i], medianTime(workers[i], size[j]));
+			printf("Median time for matrix of size: %d, and with %d workers is: %g\n", size[j], workers[i], medianTime(workers[i], size[j]));
 		}
 	}
 }
