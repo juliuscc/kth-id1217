@@ -19,7 +19,7 @@ int size;
 int matrix[MAXSIZE][MAXSIZE];
 void *Worker(void *);
 
-int oneIteration(int numWorkers, int size)
+double oneIteration(int numWorkers, int size)
 {
 	omp_set_num_threads(numWorkers);
 
@@ -82,6 +82,8 @@ int oneIteration(int numWorkers, int size)
 	}
 
 	end_time = omp_get_wtime();
+
+	return end_time - start_time;
 }
 
 /* read command line, initialize, and create threads */
@@ -98,8 +100,5 @@ int main(int argc, char *argv[])
 
 	double time = oneIteration(numWorkers, size);
 
-	// printf("the total is %d\n", total);
-	// printf("the maximum element is: %d on coordinates: (%d;%d)\n", matrix[max_i_shared][max_j_shared], max_i_shared, max_j_shared);
-	// printf("the minimum element is: %d on coordinates: (%d;%d)\n", matrix[min_i_shared][min_j_shared], min_i_shared, min_j_shared);
 	printf("it took %g seconds\n", time);
 }
