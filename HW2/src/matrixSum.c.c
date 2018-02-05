@@ -136,15 +136,6 @@ double medianTime(int numWorkers, int size)
 /* read command line, initialize, and create threads */
 int main(int argc, char *argv[])
 {
-
-	// /* read command line args if any */
-	// size = (argc > 1) ? atoi(argv[1]) : MAXSIZE;
-	// numWorkers = (argc > 2) ? atoi(argv[2]) : MAXWORKERS;
-	// if (size > MAXSIZE)
-	// 	size = MAXSIZE;
-	// if (numWorkers > MAXWORKERS)
-	// 	numWorkers = MAXWORKERS;
-
 	/* workers and size array */
 	int workers[] = {1, 2, 4, 8, 16, 24};
 	int size[] = {100, 1000, 10000};
