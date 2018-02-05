@@ -144,6 +144,7 @@ int main(int argc, char *argv[])
 	printf("Sizes of matrix = [100, 1000, 10000]\n");
 	printf("Table:\n");
 	printf("|Workers \\ Size\t|\t100\t|\t1000\t|\t10000\t|\n");
+	printf("|----------------|----------------|----------------|----------------|\n");
 
 	int i, j;
 	for(i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
