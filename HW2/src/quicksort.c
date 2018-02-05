@@ -14,6 +14,8 @@ double drand(double low, double high)
 
 double copy(double mainList[], double copyList[])
 {
+	printf("%p, ", mainList);
+
 	// int i;
 	// for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
 	// {
@@ -103,11 +105,11 @@ int main(int argc, char *argv[])
 		mainList[i] = drand(0.0, 100.0);
 	}
 
-	printf("%f, ", mainList[0]);
+	printf("%p, ", mainList);
 
 	/* Keep original list untouched */
-	// double copyList[length];
-	// copy(mainList, copyList);
+	double copyList[length];
+	copy(mainList, copyList);
 
 	// #ifdef VERBOSE
 	// 	printf("Unsorted list: [");
