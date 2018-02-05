@@ -52,7 +52,8 @@ static int partition(int low, int high, int arr[])
 	int pivot = arr[high]; /* pivot */
 	int i = (low - 1);	 // Index of smaller element
 
-	for (int j = low; j <= high - 1; j++)
+	int j;
+	for (j = low; j <= high - 1; j++)
 	{
 		// If current element is smaller than or
 		// equal to pivot
@@ -121,7 +122,7 @@ int main(int argc, char *argv[])
 	{
 #pragma single nowait
 		{
-			parallel_quicksort(0, length - 1, &copy[0], lower_bound);
+			parallel_quicksort(0, length - 1, &copyList[0], lower_bound);
 		}
 	}
 	end_time = omp_get_wtime();
