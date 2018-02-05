@@ -11,7 +11,7 @@
 double start_time, end_time;
 
 #include <stdio.h>
-#define MAXSIZE 10000 /* maximum matrix size */
+#define MAXSIZE 1000000 /* maximum matrix size */
 #define MAXWORKERS 24 /* maximum number of workers */
 
 int numWorkers;
@@ -98,7 +98,12 @@ int main(int argc, char *argv[])
 	if (numWorkers > MAXWORKERS)
 		numWorkers = MAXWORKERS;
 
-	double time = oneIteration(numWorkers, size);
+	double total = 0;
+	for(int i = 0; i < 10; i++){
+		double time = oneIteration(numWorkers, size);
+		total += time;
+	}
+	double mean = total / 10
 
-	printf("it took %g seconds\n", time);
+	printf("it took %g seconds\n", mean);
 }
