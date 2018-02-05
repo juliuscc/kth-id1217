@@ -61,11 +61,21 @@ int main(int argc, char *argv[])
 		for (j = 0; j < size; j++)
 		{
 			total += matrix[i][j];
+			if (matrix[i][j] > max_val)
+			{
+				max_val = matrix[i][j];
+			}
+			if (matrix[i][j] < min_val)
+			{
+				min_val = matrix[i][j];
+			}
 		}
 	// implicit barrier
 
 	end_time = omp_get_wtime();
 
 	printf("the total is %d\n", total);
+	printf("the maximum element is: %d on coordinates: (%d;%d)", max, 0, 0);
+	printf("the minimum element is: %d on coordinates: (%d;%d)", min, 0, 0);
 	printf("it took %g seconds\n", end_time - start_time);
 }

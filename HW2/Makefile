@@ -5,7 +5,7 @@ LIBS = -fopenmp
 SOURCE = src
 BUILD = build
 
-DEFINES = PROD
+DEFINES = DEBUG
 
 TARGETS = matrixSum-openmp matrixSum.a matrixSum.b matrixSum.c quicksort
 
