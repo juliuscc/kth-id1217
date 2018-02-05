@@ -47,7 +47,7 @@ void swap(double *a, double *b)
 }
 
 /* Partition code for quick sort */
-static int partition(int low, int high, int arr[])
+static int partition(int low, int high, double arr[])
 {
 	int pivot = arr[high]; /* pivot */
 	int i = (low - 1);	 // Index of smaller element
