@@ -75,19 +75,19 @@ int main(int argc, char *argv[])
 					min_j = j;
 				}
 			}
-#pragma omp critical
-		{
-			if (matrix[max_i][max_j] > matrix[max_i_shared][max_j_shared])
-			{
-				max_i_shared = max_i;
-				max_j_shared = max_j;
-			}
-			if (matrix[min_i][min_j] > matrix[min_i_shared][min_j_shared])
-			{
-				min_i_shared = min_i;
-				min_j_shared = min_j;
-			}
-		}
+// #pragma omp critical
+// 		{
+// 			if (matrix[max_i][max_j] > matrix[max_i_shared][max_j_shared])
+// 			{
+// 				max_i_shared = max_i;
+// 				max_j_shared = max_j;
+// 			}
+// 			if (matrix[min_i][min_j] > matrix[min_i_shared][min_j_shared])
+// 			{
+// 				min_i_shared = min_i;
+// 				min_j_shared = min_j;
+// 			}
+// 		}
 	}
 	// implicit barrier
 
