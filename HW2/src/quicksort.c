@@ -1,4 +1,5 @@
 #include <omp.h>
+#include <stdlib.h>
 
 #define MAXLENGTH 1000000 /* Maximum length of list */
 #define MAXWORKERS 24	 /* Maximum number of workers */
@@ -42,7 +43,7 @@ void swap(double *a, double *b)
 {
 	double temp = *a;
 	*a = *b;
-	*b = t;
+	*b = temp;
 }
 
 /* Partition code for quick sort */
@@ -71,7 +72,7 @@ static void parallel_quicksort(int pivot, int high, double *list, int lower_boun
 		return;
 
 	if (high - pivot < lower_bound)
-		return insertionSort(*list, high - pivot);
+		return insertionSort(list, high - pivot);
 
 	int mid = partition(pivot, high, list);
 
