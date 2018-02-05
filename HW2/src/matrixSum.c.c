@@ -19,23 +19,9 @@ int size;
 int matrix[MAXSIZE][MAXSIZE];
 void *Worker(void *);
 
-double oneIteration(int numWorkers, int size)
+double oneIteration(int arr[])
 {
-	omp_set_num_threads(numWorkers);
-
 	int i, j, total = 0;
-
-	/* initialize the matrix */
-	for (i = 0; i < size; i++)
-	{
-		//  printf("[ ");
-		for (j = 0; j < size; j++)
-		{
-			matrix[i][j] = rand() % 99;
-			//	  printf(" %d", matrix[i][j]);
-		}
-		//	  printf(" ]\n");
-	}
 
 	int max_i = 0;
 	int max_j = 0;
@@ -54,13 +40,13 @@ double oneIteration(int numWorkers, int size)
 		for (i = 0; i < size; i++)
 			for (j = 0; j < size; j++)
 			{
-				total += matrix[i][j];
-				if (matrix[i][j] > matrix[max_i][max_j])
+				total += arr[i][j];
+				if (arr[i][j] > arr[max_i][max_j])
 				{
 					max_i = i;
 					max_j = j;
 				}
-				if (matrix[i][j] < matrix[min_i][min_j])
+				if (arr[i][j] < arr[min_i][min_j])
 				{
 					min_i = i;
 					min_j = j;
@@ -68,12 +54,12 @@ double oneIteration(int numWorkers, int size)
 			}
 #pragma omp critical
 		{
-			if (matrix[max_i][max_j] > matrix[max_i_shared][max_j_shared])
+			if (arr[max_i][max_j] > arr[max_i_shared][max_j_shared])
 			{
 				max_i_shared = max_i;
 				max_j_shared = max_j;
 			}
-			if (matrix[min_i][min_j] > matrix[min_i_shared][min_j_shared])
+			if (arr[min_i][min_j] > arr[min_i_shared][min_j_shared])
 			{
 				min_i_shared = min_i;
 				min_j_shared = min_j;
@@ -119,6 +105,34 @@ void sort(double arr[])
 	}
 }
 
+double medianTime(int numWorkers, int size)
+{
+	omp_set_num_threads(numWorkers);
+
+	/* initialize the matrix */
+	for (i = 0; i < size; i++)
+	{
+		//  printf("[ ");
+		for (j = 0; j < size; j++)
+		{
+			matrix[i][j] = rand() % 99;
+			//	  printf(" %d", matrix[i][j]);
+		}
+		//	  printf(" ]\n");
+	}
+
+	int iterations = 10;
+	double times[iterations];
+	int i;
+	for(i = 0; i < iterations; i++){
+		times[i] = oneIteration(matrix);
+	}
+	// sort times
+	sort(times)
+	return times[iterations/2];
+
+}
+
 /* read command line, initialize, and create threads */
 int main(int argc, char *argv[])
 {
@@ -131,15 +145,7 @@ int main(int argc, char *argv[])
 	if (numWorkers > MAXWORKERS)
 		numWorkers = MAXWORKERS;
 
-	int iterations = 10;
-	double times[iterations];
-	int i;
-	for(i = 0; i < iterations; i++){
-		times[i] = oneIteration(numWorkers, size);
-	}
-	// sort times
-	sort(times)
-	double median = times[iterations/2];
+	double median = medianTime(numWorkers, size)
 
 	printf("Median time: %g seconds\n", median);
 }
