@@ -5,7 +5,7 @@
 	 ./matrixSum-openmp size numWorkers
 
 */
-
+#include <stdlib.h>
 #include <omp.h>
 
 double start_time, end_time;
