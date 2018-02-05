@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 	int workers[] = {1, 2, 4, 8, 16, 24};
 	int size[] = {100, 1000, 10000};
 
-	printf("Workers = [1, 2, 4, 8, 16, 24]\n");
+	printf("\nWorkers = [1, 2, 4, 8, 16, 24]\n");
 	printf("Sizes of matrix = [100, 1000, 10000]\n");
 	printf("Table:\n");
 	printf("|Workers \\ Size |      100      |     1000      |     10000     |\n");
