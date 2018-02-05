@@ -4,6 +4,7 @@ LIBS = -fopenmp
 
 SOURCE = src
 BUILD = build
+RESULT = result
 
 DEFINES = DEBUG
 
@@ -36,3 +37,6 @@ quicksort: $(SOURCE)/quicksort.c
 	@mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -D $(DEFINES) -o $(BUILD)/$@.o $(SOURCE)/$@.c $(LIBS)
 
+benchmark-matrixSum: matrixSum.c
+	@mkdir -p $(RESULT)
+	$(BUILD)/$< > $(RESULT)/$@.md
