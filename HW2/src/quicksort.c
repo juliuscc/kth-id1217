@@ -1,5 +1,6 @@
 #include <omp.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define MAXLENGTH 1000000 /* Maximum length of list */
 #define MAXWORKERS 24	 /* Maximum number of workers */
