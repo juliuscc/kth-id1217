@@ -141,6 +141,8 @@ double medianTime(int numWorkers, int size)
 /* read command line, initialize, and create threads */
 int main(int argc, char *argv[])
 {
+	omp_set_dynamic(0);
+	
 	/* workers and size array */
 	int workers[] = {1, 2, 4, 8, 16, 24};
 	int size[] = {100, 1000, 10000};

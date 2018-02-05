@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 		numWorkers = MAXWORKERS;
 
 	omp_set_num_threads(numWorkers);
+	omp_set_dynamic(0);
 
 	/* initialize the matrix */
 	for (i = 0; i < size; i++)
