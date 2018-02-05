@@ -11,12 +11,12 @@ double drand(double low, double high)
 	return ((double)rand() * (high - low)) / (double)RAND_MAX + low;
 }
 
-double copyList(double mainList[], double copy[])
+double copy(double mainList[], double copyList[])
 {
 	int i;
-	for (i = 0; i < sizeof(copy) / sizeof(copy[0]); i++)
+	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
 	{
-		copy[i] = mainList[i];
+		copyList[i] = mainList[i];
 	}
 }
 
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
 	/* Keep original list untouched */
 	double copyList[length];
-	copyList(mainList, copyList);
+	copy(mainList, copyList);
 
 #ifdef VERBOSE
 	printf("Unsorted list: [");
