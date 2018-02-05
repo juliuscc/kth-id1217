@@ -14,12 +14,12 @@ double drand(double low, double high)
 
 double copy(double mainList[], double copyList[])
 {
-	int i;
-	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
-	{
-		printf("%f, ", mainList[0]);
-		// copyList[i] = mainList[i];
-	}
+	printf("%f, ", mainList[0]);
+	// int i;
+	// for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
+	// {
+	// 	// copyList[i] = mainList[i];
+	// }
 }
 
 /* Insertion sort is effective on smaller lists */
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
 	/* Keep original list untouched */
 	double copyList[length];
-	copy(&mainList, &copyList);
+	copy(mainList, copyList);
 
 	// #ifdef VERBOSE
 	// 	printf("Unsorted list: [");
