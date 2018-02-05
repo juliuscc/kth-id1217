@@ -11,7 +11,7 @@
 double start_time, end_time;
 
 #include <stdio.h>
-#define MAXSIZE 10000 /* maximum matrix size */
+#define MAXSIZE 100000 /* maximum matrix size */
 #define MAXWORKERS 24 /* maximum number of workers */
 
 int numWorkers;
@@ -137,15 +137,24 @@ double medianTime(int numWorkers, int size)
 int main(int argc, char *argv[])
 {
 
-	/* read command line args if any */
-	size = (argc > 1) ? atoi(argv[1]) : MAXSIZE;
-	numWorkers = (argc > 2) ? atoi(argv[2]) : MAXWORKERS;
-	if (size > MAXSIZE)
-		size = MAXSIZE;
-	if (numWorkers > MAXWORKERS)
-		numWorkers = MAXWORKERS;
+	// /* read command line args if any */
+	// size = (argc > 1) ? atoi(argv[1]) : MAXSIZE;
+	// numWorkers = (argc > 2) ? atoi(argv[2]) : MAXWORKERS;
+	// if (size > MAXSIZE)
+	// 	size = MAXSIZE;
+	// if (numWorkers > MAXWORKERS)
+	// 	numWorkers = MAXWORKERS;
 
-	double median = medianTime(numWorkers, size)
+	/* workers and size array */
+	int workers[] = {1, 2, 4, 8, 16, 24};
+	int size[] = {1000, 10000, 100000}
 
-	printf("Median time: %g seconds\n", median);
+	int i, j;
+	for(i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
+	{
+		for(j = 0; j < sizeof(size) / sizeof(size[0]); j++)
+		{
+			printf("Median time for matrix of size: %d, and with %d workers is: ", size[j], workers[i], medianTime(workers[i], size[j]));
+		}
+	}
 }
