@@ -104,8 +104,8 @@ int main(int argc, char *argv[])
 	}
 
 	/* Keep original list untouched */
-	double copyList[length];
-	copy(mainList, copyList);
+	// double copyList[length];
+	// copy(mainList, copyList);
 
 	// #ifdef VERBOSE
 	// 	printf("Unsorted list: [");
