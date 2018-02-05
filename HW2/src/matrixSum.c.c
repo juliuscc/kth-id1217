@@ -86,7 +86,7 @@ void sort(double arr[])
 	int i, j;
 	bool swapped;
 
-	int n = sizeof(arr)/sizeof(arr[0])
+	int n = sizeof(arr)/sizeof(arr[0]);
 
 	for (i = 0; i < n - 1; i++)
 	{
@@ -110,6 +110,7 @@ double medianTime(int numWorkers, int size)
 {
 	omp_set_num_threads(numWorkers);
 
+	int i, j;
 	/* initialize the matrix */
 	for (i = 0; i < size; i++)
 	{
@@ -129,7 +130,7 @@ double medianTime(int numWorkers, int size)
 		times[i] = oneIteration(matrix);
 	}
 	// sort times
-	sort(times)
+	sort(times);
 	return times[iterations/2];
 
 }
@@ -148,7 +149,7 @@ int main(int argc, char *argv[])
 
 	/* workers and size array */
 	int workers[] = {1, 2, 4, 8, 16, 24};
-	int size[] = {1000, 10000, 100000}
+	int size[] = {1000, 10000, 100000};
 
 	int i, j;
 	for(i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
