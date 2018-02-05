@@ -15,10 +15,10 @@ double drand(double low, double high)
 double copy(double mainList[], double copyList[])
 {
 	int i;
-	// for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
-	// {
-	// 	copyList[i] = mainList[i];
-	// }
+	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
+	{
+		copyList[i] = mainList[i];
+	}
 }
 
 /* Insertion sort is effective on smaller lists */
