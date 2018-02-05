@@ -46,11 +46,11 @@ int main(int argc, char *argv[])
 		//	  printf(" ]\n");
 	}
 
-	int min = matrix[0][0];
-	int max = matrix[0][0];
+	int min_val = matrix[0][0];
+	int max_val = matrix[0][0];
 
 	start_time = omp_get_wtime();
-#pragma omp parallel for reduction(+:total), reduction(max:max_val), reduction(min:min_val), private(j)
+#pragma omp parallel for reduction(+:total), reduction(max:max_val), reduction(min:min_val) private(j)
 	for (i = 0; i < size; i++)
 		for (j = 0; j < size; j++)
 		{
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	end_time = omp_get_wtime();
 
 	printf("the total is %d\n", total);
-	printf("the maximum element is: %d on coordinates: (%d;%d)", max, 0, 0);
-	printf("the minimum element is: %d on coordinates: (%d;%d)", min, 0, 0);
+	printf("the maximum element is: %d on coordinates: (%d;%d)", max_val, 0, 0);
+	printf("the minimum element is: %d on coordinates: (%d;%d)", min_val, 0, 0);
 	printf("it took %g seconds\n", end_time - start_time);
 }
