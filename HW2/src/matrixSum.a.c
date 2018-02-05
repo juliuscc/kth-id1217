@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 	end_time = omp_get_wtime();
 
 	printf("the total is %d\n", total);
-	// printf("the maximum element is: %d on coordinates: (%d;%d)", matrix[max_i_shared][max_j_shared], max_i_shared, max_j_shared);
-	// printf("the minimum element is: %d on coordinates: (%d;%d)", matrix[min_i_shared][min_j_shared], min_i_shared, min_j_shared);
+	printf("the maximum element is: %d on coordinates: (%d;%d)", matrix[max_i_shared][max_j_shared], max_i_shared, max_j_shared);
+	printf("the minimum element is: %d on coordinates: (%d;%d)", matrix[min_i_shared][min_j_shared], min_i_shared, min_j_shared);
 	printf("it took %g seconds\n", end_time - start_time);
 }
