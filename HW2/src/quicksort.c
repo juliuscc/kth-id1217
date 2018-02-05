@@ -107,34 +107,34 @@ int main(int argc, char *argv[])
 	double copyList[length];
 	copy(mainList, copyList);
 
-#ifdef VERBOSE
-	printf("Unsorted list: [");
-	for (i = 0; i < length - 1; i++)
-	{
-		printf("%f, ", copyList[i]);
-	}
-	printf("%f]\n", copyList[length - 1]);
-#endif
+	// #ifdef VERBOSE
+	// 	printf("Unsorted list: [");
+	// 	for (i = 0; i < length - 1; i++)
+	// 	{
+	// 		printf("%f, ", copyList[i]);
+	// 	}
+	// 	printf("%f]\n", copyList[length - 1]);
+	// #endif
 
-	/* Start sorting list */
-	double start_time, end_time;
-	start_time = omp_get_wtime();
-#pragma omp parallel
-	{
-#pragma single nowait
-		{
-			parallel_quicksort(0, length - 1, &copyList[0], lower_bound);
-		}
-	}
-	end_time = omp_get_wtime();
+	// 	/* Start sorting list */
+	// 	double start_time, end_time;
+	// 	start_time = omp_get_wtime();
+	// #pragma omp parallel
+	// 	{
+	// #pragma single nowait
+	// 		{
+	// 			parallel_quicksort(0, length - 1, &copyList[0], lower_bound);
+	// 		}
+	// 	}
+	// 	end_time = omp_get_wtime();
 
-#ifdef VERBOSE
-	printf("Sorted list: [");
-	for (i = 0; i < length - 1; i++)
-	{
-		printf("%f, ", copyList[i]);
-	}
-	printf("%f]\n", copyList[length - 1]);
-#endif
+	// #ifdef VERBOSE
+	// 	printf("Sorted list: [");
+	// 	for (i = 0; i < length - 1; i++)
+	// 	{
+	// 		printf("%f, ", copyList[i]);
+	// 	}
+	// 	printf("%f]\n", copyList[length - 1]);
+	// #endif
 	return 0;
 }
