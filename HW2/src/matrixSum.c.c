@@ -6,6 +6,7 @@
 
 */
 #include <stdlib.h>
+#include <stdbool.h>
 #include <omp.h>
 
 double start_time, end_time;
