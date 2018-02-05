@@ -16,11 +16,10 @@ double start_time, end_time;
 #define MAXWORKERS 24 /* maximum number of workers */
 
 int numWorkers;
-int size;
 int matrix[MAXSIZE][MAXSIZE];
 void *Worker(void *);
 
-double oneIteration()
+double oneIteration(int size)
 {
 	int i, j, total = 0;
 
@@ -126,7 +125,7 @@ double medianTime(int numWorkers, int size)
 	int iterations = 10;
 	double times[iterations];
 	for(i = 0; i < iterations; i++){
-		times[i] = oneIteration();
+		times[i] = oneIteration(size);
 	}
 	// sort times
 	sort(times);
