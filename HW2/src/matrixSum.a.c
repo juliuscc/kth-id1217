@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
 	start_time = omp_get_wtime();
 
-#pragma omp parallel shared(max_i_shared, max_j_shared, min_i_shared, min_j_shared) private(j, max_i, max_j, min_i, min_j)
+#pragma omp parallel shared(max_i_shared, max_j_shared, min_i_shared, min_j_shared) private(j) firstprivate(max_i, max_j, min_i, min_j)
 	{
 #pragma omp for reduction(+:total) nowait
 		for (i = 0; i < size; i++)
