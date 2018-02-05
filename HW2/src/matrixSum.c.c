@@ -141,5 +141,5 @@ int main(int argc, char *argv[])
 	sort(times)
 	double median = times[iterations/2];
 
-	printf("it took %g seconds\n", median);
+	printf("Median time: %g seconds\n", median);
 }
