@@ -46,30 +46,49 @@ int main(int argc, char *argv[])
 		//	  printf(" ]\n");
 	}
 
-	int min_val = matrix[0][0];
-	int max_val = matrix[0][0];
+	int max_i = max_j = min_i = min_j = 0;
+	int max_i_shared = max_j_shared = min_i_shared = min_j_shared = 0;
 
 	start_time = omp_get_wtime();
-#pragma omp parallel for reduction(+:total), reduction(max:max_val), reduction(min:min_val) private(j)
-	for (i = 0; i < size; i++)
-		for (j = 0; j < size; j++)
-		{
-			total += matrix[i][j];
-			if (matrix[i][j] > max_val)
+
+#pragma omp parallel shared(max_i_shared, max_j_shared, min_i_shared, min_j_shared) private(j, max_i, max_j, min_i, min_j)
+	{
+#pragma omp for reduction(+:total) nowait
+		for (i = 0; i < size; i++)
+			for (j = 0; j < size; j++)
 			{
-				max_val = matrix[i][j];
+				total += matrix[i][j];
+				if (matrix[i][j] > matrix[max_i][max_j])
+				{
+					max_i = i;
+					max_j = j;
+				}
+				if (matrix[i][j] < matrix[min_i][min_j])
+				{
+					min_i = i;
+					min_j = j;
+				}
 			}
-			if (matrix[i][j] < min_val)
+#pragma omp critical
+		{
+			if (matrix[max_i][max_j] > matrix[max_i_shared][max_j_shared])
 			{
-				min_val = matrix[i][j];
+				max_i_shared = max_i;
+				max_j_shared = max_j;
+			}
+			if (matrix[min_i][min_j] > matrix[min_i_shared][min_j_shared])
+			{
+				min_i_shared = min_i;
+				min_j_shared = min_j;
 			}
 		}
+	}
 	// implicit barrier
 
 	end_time = omp_get_wtime();
 
 	printf("the total is %d\n", total);
-	printf("the maximum element is: %d on coordinates: (%d;%d)", max_val, 0, 0);
-	printf("the minimum element is: %d on coordinates: (%d;%d)", min_val, 0, 0);
+	printf("the maximum element is: %d on coordinates: (%d;%d)", matrix[max_i_shared][max_j_shared], max_i_shared, max_j_shared);
+	printf("the minimum element is: %d on coordinates: (%d;%d)", matrix[min_i_shared][min_j_shared], min_i_shared, min_j_shared);
 	printf("it took %g seconds\n", end_time - start_time);
 }
