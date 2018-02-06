@@ -39,34 +39,42 @@ static void insertionSort(double arr[], int n)
 	}
 }
 
-/* Code for swaping two elements */
-void swap(double *a, double *b)
-{
-	double temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
 /* Partition code for quick sort */
-static int partition(int low, int high, double arr[])
+static int partition(int pivot_index, int high, double arr[])
 {
-	double pivot = arr[high]; /* pivot */
-	int i = (low - 1);		  // Index of smaller element
+	double pivot = arr[pivot_index];
 
-	int j;
-	for (j = low; j <= high - 1; j++)
+	int k = pivot_index;
+	int l = high + 1;
+	double temp;
+
+	do
+		k++;
+	while ((arr[k] <= pivot) && (k < r));
+	do
+		l--;
+	while (arr[l] > pivot);
+
+	while (k < l)
 	{
-		// If current element is smaller than or
-		// equal to pivot
-		if (arr[j] <= pivot)
-		{
-			i++; // increment index of smaller element
-			swap(&arr[i], &arr[j]);
-		}
+		temp = arr[k];
+		arr[k] = arr[l];
+		arr[l] = temp;
+
+		do
+			k++;
+		while (arr[k] <= x);
+		do
+			l--;
+		while (arr[l] > x);
 	}
-	swap(&arr[i + 1], &arr[high]);
-	return (i + 1);
+
+	temp = arr[pivot_index];
+	arr[pivot_index] = arr[l];
+	arr[l] = temp;
+	return l;
 }
+
 /* Parallel code for quick sort */
 static void parallel_quicksort(int pivot, int high, double *list, int lower_bound)
 {
