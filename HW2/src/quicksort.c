@@ -12,6 +12,15 @@ double drand(double low, double high)
 	return ((double)rand() * (high - low)) / (double)RAND_MAX + low;
 }
 
+double copy(double mainList[], double copyList[])
+{
+	int i;
+	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
+	{
+		copyList[i] = mainList[i];
+	}
+}
+
 /* Insertion sort is effective on smaller lists */
 static void insertionSort(double arr[], int n)
 {
@@ -96,41 +105,39 @@ int main(int argc, char *argv[])
 
 	/* Keep original list untouched */
 	double copyList[length];
-	printf("length is: %d", length);
-	// for (i = 0; i < length; i++)
-	// {
-	// 	printf("i: %d\n", i);
-	// 	// copyList[i] = mainList[i];
-	// }
+	for (i = 0; i < length; i++)
+	{
+		copyList[i] = mainList[i];
+	}
 
-	// #ifdef VERBOSE
-	// 	printf("Unsorted list: [");
-	// 	for (i = 0; i < length - 1; i++)
-	// 	{
-	// 		printf("%f, ", copyList[i]);
-	// 	}
-	// 	printf("%f]\n", copyList[length - 1]);
-	// #endif
+#ifdef VERBOSE
+	printf("Unsorted list: [");
+	for (i = 0; i < length - 1; i++)
+	{
+		printf("%f, ", copyList[i]);
+	}
+	printf("%f]\n", copyList[length - 1]);
+#endif
 
-	// 	/* Start sorting list */
-	// 	double start_time, end_time;
-	// 	start_time = omp_get_wtime();
-	// #pragma omp parallel
-	// 	{
-	// #pragma single nowait
-	// 		{
-	// 			parallel_quicksort(0, length - 1, &copyList[0], lower_bound);
-	// 		}
-	// 	}
-	// 	end_time = omp_get_wtime();
+	/* Start sorting list */
+	double start_time, end_time;
+	start_time = omp_get_wtime();
+#pragma omp parallel
+	{
+#pragma single nowait
+		{
+			parallel_quicksort(0, length - 1, &copyList[0], lower_bound);
+		}
+	}
+	end_time = omp_get_wtime();
 
-	// #ifdef VERBOSE
-	// 	printf("Sorted list: [");
-	// 	for (i = 0; i < length - 1; i++)
-	// 	{
-	// 		printf("%f, ", copyList[i]);
-	// 	}
-	// 	printf("%f]\n", copyList[length - 1]);
-	// #endif
+#ifdef VERBOSE
+	printf("Sorted list: [");
+	for (i = 0; i < length - 1; i++)
+	{
+		printf("%f, ", copyList[i]);
+	}
+	printf("%f]\n", copyList[length - 1]);
+#endif
 	return 0;
 }
