@@ -80,8 +80,8 @@ static void sequential_quicksort(int pivot, int high, double *list, int lower_bo
 		return;
 
 	int mid = partition(pivot, high, list);
-	parallel_quicksort(pivot, mid - 1, list, lower_bound);
-	parallel_quicksort(mid + 1, high, list, lower_bound);
+	sequential_quicksort(pivot, mid - 1, list, lower_bound);
+	sequential_quicksort(mid + 1, high, list, lower_bound);
 }
 
 /* Parallel code for quick sort */
