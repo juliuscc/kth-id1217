@@ -40,39 +40,38 @@ static void insertionSort(double arr[], int n)
 }
 
 /* Partition code for quick sort */
-static int partition(int pivot_index, int high, double arr[])
+static int
+partition(int p, int r, float *data)
 {
-	double pivot = arr[pivot_index];
-
-	int k = pivot_index;
-	int l = high + 1;
-	double temp;
-
-	do
-		k++;
-	while ((arr[k] <= pivot) && (k < high));
-	do
-		l--;
-	while (arr[l] > pivot);
-
-	while (k < l)
+	float x = data[p];
+	int k = p;
+	int l = r + 1;
+	float t;
+	while (1)
 	{
-		temp = arr[k];
-		arr[k] = arr[l];
-		arr[l] = temp;
-
 		do
 			k++;
-		while (arr[k] <= pivot);
+		while ((data[k] <= x) && (k < r));
 		do
 			l--;
-		while (arr[l] > pivot);
+		while (data[l] > x);
+		while (k < l)
+		{
+			t = data[k];
+			data[k] = data[l];
+			data[l] = t;
+			do
+				k++;
+			while (data[k] <= x);
+			do
+				l--;
+			while (data[l] > x);
+		}
+		t = data[p];
+		data[p] = data[l];
+		data[l] = t;
+		return l;
 	}
-
-	temp = arr[pivot_index];
-	arr[pivot_index] = arr[l];
-	arr[l] = temp;
-	return l;
 }
 
 /* Parallel code for quick sort */
