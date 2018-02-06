@@ -96,10 +96,10 @@ int main(int argc, char *argv[])
 
 	/* Keep original list untouched */
 	double copyList[length];
-	// for (i = 0; i < length; i++)
-	// {
-	// 	copyList[i] = mainList[i];
-	// }
+	for (i = 0; i < length; i++)
+	{
+		copyList[i] = mainList[i];
+	}
 
 	// #ifdef VERBOSE
 	// 	printf("Unsorted list: [");
