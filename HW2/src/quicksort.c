@@ -139,5 +139,7 @@ int main(int argc, char *argv[])
 	}
 	printf("%f]\n", copyList[length - 1]);
 #endif
+
+	printf("Sorted in %g seconds\n", end_time - start_time);
 	return 0;
 }
