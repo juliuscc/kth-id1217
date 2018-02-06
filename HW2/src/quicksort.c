@@ -139,7 +139,8 @@ int main(int argc, char *argv[])
 	int i;
 	for (i = 0; i < length; i++)
 	{
-		mainList[i] = drand(0.0, 100.0);
+		// mainList[i] = drand(0.0, 100.0);
+		mainList[i] = 1.1 * rand() * 5000 / RAND_MAX;
 	}
 
 	/* Keep original list untouched */
