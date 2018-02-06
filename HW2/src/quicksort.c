@@ -101,12 +101,12 @@ int main(int argc, char *argv[])
 	int lower_bound = (argc > 3) ? atoi(argv[3]) : MINLOWERBOUND;
 
 	/* Limit arguments to valid args */
-	if (length > MAXLENGTH)
-		length = MAXLENGTH;
-	if (numWorkers > MAXWORKERS)
-		numWorkers = MAXWORKERS;
-	if (lower_bound < MINLOWERBOUND)
-		lower_bound = MINLOWERBOUND;
+	// if (length > MAXLENGTH)
+	// 	length = MAXLENGTH;
+	// if (numWorkers > MAXWORKERS)
+	// 	numWorkers = MAXWORKERS;
+	// if (lower_bound < MINLOWERBOUND)
+	// 	lower_bound = MINLOWERBOUND;
 
 	printf("List lenght: %d\n", length);
 	printf("Number of workers: %d\n", numWorkers);
