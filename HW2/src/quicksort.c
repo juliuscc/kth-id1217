@@ -74,6 +74,16 @@ partition(int p, int r, double *data)
 	}
 }
 
+static void sequential_quicksort(int pivot, int high, double *list, int lower_bound)
+{
+	if (pivot >= high)
+		return;
+
+	int mid = partition(pivot, high, list);
+	parallel_quicksort(pivot, mid - 1, list, lower_bound);
+	parallel_quicksort(mid + 1, high, list, lower_bound);
+}
+
 /* Parallel code for quick sort */
 static void parallel_quicksort(int pivot, int high, double *list, int lower_bound)
 {
@@ -81,7 +91,7 @@ static void parallel_quicksort(int pivot, int high, double *list, int lower_boun
 		return;
 
 	if ((high - pivot) < lower_bound)
-		return insertionSort(list, high - pivot);
+		return sequential_quicksort(pivot, high, list, lower_bound);
 
 	int mid = partition(pivot, high, list);
 
