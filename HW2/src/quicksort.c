@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 	mainList = (double *)malloc(sizeof(double) * length);
 	copyList = (double *)malloc(sizeof(double) * length);
 
-	if (mainlist == NULL || copyList == NULL)
+	if (mainList == NULL || copyList == NULL)
 	{
 		printf("Error\n");
 		exit(1);
