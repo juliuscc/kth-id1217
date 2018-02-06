@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAXLENGTH 10000 /* Maximum length of list */
-#define MAXWORKERS 24   /* Maximum number of workers */
-#define MINLOWERBOUND 1 /* Minimum lower bound */
+#define MAXLENGTH 100000 /* Maximum length of list */
+#define MAXWORKERS 24	/* Maximum number of workers */
+#define MINLOWERBOUND 1  /* Minimum lower bound */
 
 /* Helper functions */
 double drand(double low, double high)
@@ -87,10 +87,18 @@ static void parallel_quicksort(int pivot, int high, double *list, int lower_boun
 /* Main: sets up all parameters */
 int main(int argc, char *argv[])
 {
-	/* read command line args if any */
+	/* Read command line args if any */
 	int length = (argc > 1) ? atoi(argv[1]) : MAXLENGTH;
 	int numWorkers = (argc > 2) ? atoi(argv[2]) : MAXWORKERS;
 	int lower_bound = (argc > 3) ? atoi(argv[3]) : MINLOWERBOUND;
+
+	/* Limit arguments to valid args */
+	if (length > MAXLENGTH)
+		length = MAXLENGTH;
+	if (numWorkers > MAXWORKERS)
+		numWorkers = MAXWORKERS;
+	if (lower_bound < MINLOWERBOUND)
+		lower_bound = MINLOWERBOUND;
 
 	/* Set number of threads */
 	omp_set_num_threads(numWorkers);
