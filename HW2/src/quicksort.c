@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAXLENGTH 1000000 /* Maximum length of list */
-#define MAXWORKERS 24	 /* Maximum number of workers */
-#define MINLOWERBOUND 1   /* Minimum lower bound */
+#define MAXLENGTH 10000 /* Maximum length of list */
+#define MAXWORKERS 24   /* Maximum number of workers */
+#define MINLOWERBOUND 1 /* Minimum lower bound */
 
 /* Helper functions */
 double drand(double low, double high)
