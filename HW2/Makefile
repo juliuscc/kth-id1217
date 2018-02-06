@@ -6,7 +6,7 @@ SOURCE = src
 BUILD = build
 RESULT = result
 
-DEFINES = VERBOSE
+DEFINES = PROD
 
 TARGETS = matrixSum-openmp matrixSum.a matrixSum.b matrixSum.c quicksort
 
