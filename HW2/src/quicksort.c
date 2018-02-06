@@ -50,7 +50,7 @@ static int partition(int pivot_index, int high, double arr[])
 
 	do
 		k++;
-	while ((arr[k] <= pivot) && (k < r));
+	while ((arr[k] <= pivot) && (k < high));
 	do
 		l--;
 	while (arr[l] > pivot);
@@ -63,10 +63,10 @@ static int partition(int pivot_index, int high, double arr[])
 
 		do
 			k++;
-		while (arr[k] <= x);
+		while (arr[k] <= pivot);
 		do
 			l--;
-		while (arr[l] > x);
+		while (arr[l] > pivot);
 	}
 
 	temp = arr[pivot_index];
