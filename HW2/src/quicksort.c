@@ -41,12 +41,12 @@ static void insertionSort(double arr[], int n)
 
 /* Partition code for quick sort */
 static int
-partition(int p, int r, float *data)
+partition(int p, int r, double *data)
 {
-	float x = data[p];
+	double x = data[p];
 	int k = p;
 	int l = r + 1;
-	float t;
+	double t;
 	while (1)
 	{
 		do
