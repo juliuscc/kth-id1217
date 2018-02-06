@@ -81,7 +81,7 @@ static void parallel_quicksort(int pivot, int high, double *list, int lower_boun
 	if (pivot >= high)
 		return;
 
-	if (high - pivot < lower_bound)
+	if ((high - pivot) < lower_bound)
 		return insertionSort(list, high - pivot);
 
 	int mid = partition(pivot, high, list);
