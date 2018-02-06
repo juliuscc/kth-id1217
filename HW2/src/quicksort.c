@@ -125,7 +125,17 @@ int main(int argc, char *argv[])
 	omp_set_num_threads(numWorkers);
 
 	/* Initialize list */
-	double mainList[length];
+	double *mainList;
+	double *copyList;
+	mainList = (double *)malloc(sizeof(double) * length);
+	copyList = (double *)malloc(sizeof(double) * length);
+
+	if (mainlist == NULL || copyList == NULL)
+	{
+		printf("Error\n");
+		exit(1);
+	}
+
 	int i;
 	for (i = 0; i < length; i++)
 	{
@@ -133,7 +143,6 @@ int main(int argc, char *argv[])
 	}
 
 	/* Keep original list untouched */
-	double copyList[length];
 	for (i = 0; i < length; i++)
 	{
 		copyList[i] = mainList[i];
