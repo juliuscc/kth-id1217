@@ -100,6 +100,10 @@ int main(int argc, char *argv[])
 	if (lower_bound < MINLOWERBOUND)
 		lower_bound = MINLOWERBOUND;
 
+	printf("List lenght: %d\n", length);
+	printf("Number of workers: %d\n", numWorkers);
+	printf("Lower bound where insertion sort begins: %d\n\n", lower_bound);
+
 	/* Set number of threads */
 	omp_set_num_threads(numWorkers);
 
