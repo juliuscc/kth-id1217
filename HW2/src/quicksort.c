@@ -85,6 +85,7 @@ double oneIteration(float *originalArray, int length)
 		printf("Error!\n");
 		exit(1);
 	}
+	tempArray[0] = 0;
 	// for (i = 0; i < length; i++)
 	// 	tempArray[i] = originalArray[i];
 
