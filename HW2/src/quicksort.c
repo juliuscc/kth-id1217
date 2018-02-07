@@ -78,15 +78,15 @@ double oneIteration(float *originalArray, int length)
 	float *tempArray;
 	int i;
 
-	// 	/* Create this iterations array */
-	// 	tempArray = (float *)malloc(sizeof(float) * length);
-	// 	if (tempArray == NULL)
-	// 	{
-	// 		printf("Error!\n");
-	// 		exit(1);
-	// 	}
-	// 	for (i = 0; i < length; i++)
-	// 		tempArray[i] = originalArray[i];
+	/* Create this iterations array */
+	tempArray = (float *)malloc(sizeof(float) * length);
+	if (tempArray == NULL)
+	{
+		printf("Error!\n");
+		exit(1);
+	}
+	for (i = 0; i < length; i++)
+		tempArray[i] = originalArray[i];
 
 	// 	/* Do and measure one iteration */
 	start_time = omp_get_wtime();
