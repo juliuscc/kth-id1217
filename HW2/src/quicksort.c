@@ -78,27 +78,27 @@ double oneIteration(float *originalArray, int length)
 	float *tempArray;
 	int i;
 
-	/* Create this iterations array */
-	tempArray = (float *)malloc(sizeof(float) * length);
-	if (tempArray == NULL)
-	{
-		printf("Error!\n");
-		exit(1);
-	}
-	for (i = 0; i < length; i++)
-		tempArray[i] = originalArray[i];
+	// 	/* Create this iterations array */
+	// 	tempArray = (float *)malloc(sizeof(float) * length);
+	// 	if (tempArray == NULL)
+	// 	{
+	// 		printf("Error!\n");
+	// 		exit(1);
+	// 	}
+	// 	for (i = 0; i < length; i++)
+	// 		tempArray[i] = originalArray[i];
 
-	/* Do and measure one iteration */
+	// 	/* Do and measure one iteration */
 	start_time = omp_get_wtime();
-#pragma omp parallel
-	{
-#pragma omp single nowait
-		par_quick_sort(0, length - 1, &tempArray[0], 1000);
-	}
+	// #pragma omp parallel
+	// 	{
+	// #pragma omp single nowait
+	// 		par_quick_sort(0, length - 1, &tempArray[0], 1000);
+	// 	}
 	end_time = omp_get_wtime();
 
-	/* Free the array and return the time passed sorting it */
-	free(tempArray);
+	// 	/* Free the array and return the time passed sorting it */
+	// 	free(tempArray);
 	return end_time - start_time;
 }
 
@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
 	printf("Sorting list...\n");
 	printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
 
+	free(mainArray);
 	// 	/*
 	//      * Quick sort using OMP Task
 	//      */
