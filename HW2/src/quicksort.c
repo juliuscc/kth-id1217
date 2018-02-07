@@ -170,20 +170,30 @@ int main(int argc, char *argv[])
 		printf("Error!\n");
 		exit(1);
 	}
-	int i;
+	int i, j;
 	for (i = 0; i < maxLength; i++)
 		mainArray[i] = drand(0.0, 100.0);
 
 	/* Do work */
 	// printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
 
+	/* Print start stuff */
 	printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
 	printf("Lengts of list = [100000, 1000000, 10000000]\n");
 	printf("Table:\n");
 	printf("|Workers\\Length |     100000    |    1000000    |    10000000   |\n");
 	printf("|---------------|---------------|---------------|---------------|\n");
 
-	printf("Median time is %g seconds\n", medianTime(&mainArray[0], workers[0], lengths[0]));
+	/* Run benchmark */
+	for (i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
+	{
+		printf("|%d\t\t", workers[i]);
+		for (j = 0; j < sizeof(lengths) / sizeof(lengths[0]); j++)
+		{
+			printf("|%g\t", medianTime(&mainArray[0], workers[i], lengths[j]));
+		}
+		printf("|\n");
+	}
 
 	/* Free main array and return */
 	free(mainArray);
