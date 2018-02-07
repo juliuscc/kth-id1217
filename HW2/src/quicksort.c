@@ -85,22 +85,20 @@ double oneIteration(float *originalArray, int length)
 		printf("Error!\n");
 		exit(1);
 	}
-	printf("LENGTH: %d", length);
-	tempArray[0] = originalArray[0];
-	// for (i = 0; i < length; i++)
-	// 	tempArray[i] = originalArray[i];
+	for (i = 0; i < length; i++)
+		tempArray[i] = originalArray[i];
 
-	// 	/* Do and measure one iteration */
+	/* Do and measure one iteration */
 	start_time = omp_get_wtime();
-	// #pragma omp parallel
-	// 	{
-	// #pragma omp single nowait
-	// 		par_quick_sort(0, length - 1, &tempArray[0], 1000);
-	// 	}
+#pragma omp parallel
+	{
+#pragma omp single nowait
+		par_quick_sort(0, length - 1, &tempArray[0], 1000);
+	}
 	end_time = omp_get_wtime();
 
-	// 	/* Free the array and return the time passed sorting it */
-	// 	free(tempArray);
+	/* Free the array and return the time passed sorting it */
+	free(tempArray);
 	return end_time - start_time;
 }
 
@@ -108,7 +106,7 @@ int main(int argc, char *argv[])
 {
 	int workers[6] = {1, 2, 4, 8, 12, 24};
 	int lengths[3] = {100000, 1000000, 10000000};
-	int maxLength = lengths[sizeof(lengths) / sizeof(int)];
+	int maxLength = lengths[sizeof(lengths) / sizeof(int) - 1];
 
 	/* Init main array */
 	float *mainArray;
