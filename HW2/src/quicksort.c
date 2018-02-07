@@ -85,8 +85,8 @@ double oneIteration(float *originalArray, int length)
 		printf("Error!\n");
 		exit(1);
 	}
-	for (i = 0; i < length; i++)
-		tempArray[i] = originalArray[i];
+	// for (i = 0; i < length; i++)
+	// 	tempArray[i] = originalArray[i];
 
 	// 	/* Do and measure one iteration */
 	start_time = omp_get_wtime();
