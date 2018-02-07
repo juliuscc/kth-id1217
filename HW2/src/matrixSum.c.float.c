@@ -16,7 +16,7 @@ double start_time, end_time;
 #define MAXWORKERS 24 /* maximum number of workers */
 
 int numWorkers;
-int matrix[MAXSIZE][MAXSIZE];
+double matrix[MAXSIZE][MAXSIZE];
 void *Worker(void *);
 
 double oneIteration(int size)
@@ -73,15 +73,20 @@ double oneIteration(int size)
 	return end_time - start_time;
 }
 
-void swap(int *xp, int *yp)
+double drand(double low, double high)
 {
-	int temp = *xp;
+	return ((double)rand() * (high - low)) / (double)RAND_MAX + low;
+}
+
+void swap(double *xp, double *yp)
+{
+	double temp = *xp;
 	*xp = *yp;
 	*yp = temp;
 }
 
 // An optimized version of Bubble Sort
-void sort(int arr[])
+void sort(double arr[])
 {
 	int i, j;
 	bool swapped;
@@ -117,7 +122,7 @@ double medianTime(int numWorkers, int size)
 		//  printf("[ ");
 		for (j = 0; j < size; j++)
 		{
-			matrix[i][j] = rand() % 99;
+			matrix[i][j] = drand(0.0, 100.0);
 			//	  printf(" %d", matrix[i][j]);
 		}
 		//	  printf(" ]\n");
