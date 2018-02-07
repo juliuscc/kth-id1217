@@ -75,7 +75,7 @@ par_quick_sort(int p, int r, float *data, int low_limit)
 double oneIteration(float *originalArray, int length)
 {
 	double start_time, end_time;
-	double *tempArray;
+	float *tempArray;
 	int i;
 
 	/* Create this iterations array */
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 	int maxLength = lengths[sizeof(lengths) / sizeof(int)];
 
 	/* Init main array */
-	double *mainArray;
+	float *mainArray;
 	mainArray = (float *)malloc(sizeof(float) * maxLength);
 	if (mainArray == NULL)
 	{
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 	}
 	int i;
 	for (i = 0; i < maxLength; i++)
-		mainArray = drand(0.0, 100.0);
+		mainArray[i] = drand(0.0, 100.0);
 
 	printf("Sorting list...\n");
 	printf("Sorting list took %g seconds\n", oneIteration(mainArray, lengths[0]));
