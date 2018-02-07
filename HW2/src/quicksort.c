@@ -177,13 +177,13 @@ int main(int argc, char *argv[])
 	/* Do work */
 	// printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
 
-	// printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
-	// printf("Lengts of list = [100000, 1000000, 10000000]\n");
-	// printf("Table:\n");
-	// printf("|Workers \\ Length|     100000    |    1000000    |    10000000   |\n");
-	// printf("|---------------|---------------|---------------|---------------|\n");
+	printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
+	printf("Lengts of list = [100000, 1000000, 10000000]\n");
+	printf("Table:\n");
+	printf("|Workers \\ Length|     100000    |    1000000    |    10000000   |\n");
+	printf("|---------------|---------------|---------------|---------------|\n");
 
-	printf("Median time is %g seconds", medianTime(&mainArray[0], workers[0], lengths[0]));
+	printf("Median time is %g seconds\n", medianTime(&mainArray[0], workers[0], lengths[0]));
 
 	/* Free main array and return */
 	free(mainArray);
