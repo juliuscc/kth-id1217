@@ -39,8 +39,8 @@ quicksort: $(SOURCE)/quicksort.c
 
 benchmark-matrixSum: matrixSum.c
 	@mkdir -p $(RESULT)
-	$(BUILD)/$< > $(RESULT)/$@.md
+	$(BUILD)/$<.o > $(RESULT)/$@.md
 
 benchmark-quicksort: quicksort
 	@mkdir -p $(RESULT)
-	$(BUILD)/$< > $(RESULT)/$@.md
+	$(BUILD)/$<.o > $(RESULT)/$@.md
