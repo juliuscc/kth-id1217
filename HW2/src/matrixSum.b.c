@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
 
 #pragma omp parallel shared(max_i_shared, max_j_shared, min_i_shared, min_j_shared) private(j) firstprivate(max_i, max_j, min_i, min_j)
 	{
-#pragma omp for reduction(+:total) nowait
+#pragma omp for reduction(+ \
+						  : total) nowait
 		for (i = 0; i < size; i++)
 			for (j = 0; j < size; j++)
 			{
@@ -98,4 +99,6 @@ int main(int argc, char *argv[])
 	printf("the maximum element is: %d on coordinates: (%d;%d)\n", matrix[max_i_shared][max_j_shared], max_i_shared, max_j_shared);
 	printf("the minimum element is: %d on coordinates: (%d;%d)\n", matrix[min_i_shared][min_j_shared], min_i_shared, min_j_shared);
 	printf("it took %g seconds\n", end_time - start_time);
+
+	return 0;
 }

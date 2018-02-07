@@ -36,7 +36,8 @@ double oneIteration(int size)
 
 #pragma omp parallel shared(max_i_shared, max_j_shared, min_i_shared, min_j_shared) private(j) firstprivate(max_i, max_j, min_i, min_j)
 	{
-#pragma omp for reduction(+:total) nowait
+#pragma omp for reduction(+ \
+						  : total) nowait
 		for (i = 0; i < size; i++)
 			for (j = 0; j < size; j++)
 			{
@@ -90,7 +91,7 @@ void sort(double arr[])
 	int i, j;
 	bool swapped;
 
-	int n = sizeof(arr)/sizeof(arr[0]);
+	int n = sizeof(arr) / sizeof(arr[0]);
 
 	for (i = 0; i < n - 1; i++)
 	{
@@ -129,20 +130,20 @@ double medianTime(int numWorkers, int size)
 
 	int iterations = 10;
 	double times[iterations];
-	for(i = 0; i < iterations; i++){
+	for (i = 0; i < iterations; i++)
+	{
 		times[i] = oneIteration(size);
 	}
 	// sort times
 	sort(times);
-	return times[iterations/2];
-
+	return times[iterations / 2];
 }
 
 /* read command line, initialize, and create threads */
 int main(int argc, char *argv[])
 {
 	omp_set_dynamic(0);
-	
+
 	/* workers and size array */
 	int workers[] = {1, 2, 4, 8, 16, 24};
 	int size[] = {100, 1000, 10000};
@@ -154,14 +155,16 @@ int main(int argc, char *argv[])
 	printf("|---------------|---------------|---------------|---------------|\n");
 
 	int i, j;
-	for(i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
+	for (i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)
 	{
 		printf("|%d\t\t", workers[i]);
-		for(j = 0; j < sizeof(size) / sizeof(size[0]); j++)
+		for (j = 0; j < sizeof(size) / sizeof(size[0]); j++)
 		{
 			printf("|%g\t", medianTime(workers[i], size[j]));
 			// printf("Median time for matrix of size: %d, and with %d workers is: %g\n", size[j], workers[i], medianTime(workers[i], size[j]));
 		}
 		printf("|\n");
 	}
+
+	return 0;
 }
