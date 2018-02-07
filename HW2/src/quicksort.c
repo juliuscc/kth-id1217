@@ -12,7 +12,7 @@ double drand(double low, double high)
 	return ((double)rand() * (high - low)) / (double)RAND_MAX + low;
 }
 
-double copy(double mainList[], double copyList[])
+static void copy(double mainList[], double copyList[])
 {
 	int i;
 	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
