@@ -3,12 +3,12 @@
 #include <omp.h>
 
 static int
-partition(int p, int r, double *data)
+partition(int p, int r, float *data)
 {
-	double x = data[p];
+	float x = data[p];
 	int k = p;
 	int l = r + 1;
-	double t;
+	float t;
 	while (1)
 	{
 		do
@@ -37,7 +37,7 @@ partition(int p, int r, double *data)
 }
 
 static void
-seq_quick_sort(int p, int r, double *data)
+seq_quick_sort(int p, int r, float *data)
 {
 	if (p < r)
 	{
@@ -48,7 +48,7 @@ seq_quick_sort(int p, int r, double *data)
 }
 
 static void
-par_quick_sort(int p, int r, double *data, int low_limit)
+par_quick_sort(int p, int r, float *data, int low_limit)
 {
 	if (p < r)
 	{
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 {
 	int i;
 	int pthr;
-	double *Data;
+	float *Data;
 	int N, low_limit;
 	double start_time, end_time;
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	/*
      * Generate the array
      */
-	Data = (double *)malloc(sizeof(double) * N);
+	Data = (float *)malloc(sizeof(float) * N);
 	if (Data == NULL)
 	{
 		printf("Error\n");
