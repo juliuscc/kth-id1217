@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 	printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
 	printf("Lengts of list = [100000, 1000000, 10000000]\n");
 	printf("Table:\n");
-	printf("|Workers \\ Length|     100000    |    1000000    |    10000000   |\n");
+	printf("|Workers\\Length |     100000    |    1000000    |    10000000   |\n");
 	printf("|---------------|---------------|---------------|---------------|\n");
 
 	printf("Median time is %g seconds\n", medianTime(&mainArray[0], workers[0], lengths[0]));
