@@ -73,15 +73,15 @@ double oneIteration(int size)
 	return end_time - start_time;
 }
 
-void swap(int *xp, int *yp)
+void swap(double *xp, double *yp)
 {
-	int temp = *xp;
+	double temp = *xp;
 	*xp = *yp;
 	*yp = temp;
 }
 
 // An optimized version of Bubble Sort
-void sort(int arr[])
+void sort(double arr[])
 {
 	int i, j;
 	bool swapped;
