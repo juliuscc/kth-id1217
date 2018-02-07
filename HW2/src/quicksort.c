@@ -2,17 +2,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define MAXLENGTH 100000 /* Maximum length of list */
-#define MAXWORKERS 24	/* Maximum number of workers */
-#define MINLOWERBOUND 1  /* Minimum lower bound */
+#define MAXLENGTH 100000  /* Maximum length of list */
+#define MAXWORKERS 24	 /* Maximum number of workers */
+#define MINLOWERBOUND 100 /* Minimum lower bound */
 
 /* Helper functions */
-double drand(double low, double high)
+float drand(float low, float high)
 {
-	return ((double)rand() * (high - low)) / (double)RAND_MAX + low;
+	return ((float)rand() * (high - low)) / (float)RAND_MAX + low;
 }
 
-static void copy(double mainList[], double copyList[])
+static void copy(float mainList[], float copyList[])
 {
 	int i;
 	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
@@ -22,7 +22,7 @@ static void copy(double mainList[], double copyList[])
 }
 
 /* Insertion sort is effective on smaller lists */
-static void insertionSort(double arr[], int n)
+static void insertionSort(float arr[], int n)
 {
 	int i, key, j;
 	for (i = 1; i < n; i++)
@@ -41,12 +41,12 @@ static void insertionSort(double arr[], int n)
 
 /* Partition code for quick sort */
 static int
-partition(int p, int r, double *data)
+partition(int p, int r, float *data)
 {
-	double x = data[p];
+	float x = data[p];
 	int k = p;
 	int l = r + 1;
-	double t;
+	float t;
 	while (1)
 	{
 		do
@@ -74,7 +74,7 @@ partition(int p, int r, double *data)
 	}
 }
 
-static void sequential_quicksort(int pivot, int high, double *list, int lower_bound)
+static void sequential_quicksort(int pivot, int high, float *list, int lower_bound)
 {
 	if (pivot >= high)
 		return;
@@ -85,7 +85,7 @@ static void sequential_quicksort(int pivot, int high, double *list, int lower_bo
 }
 
 /* Parallel code for quick sort */
-static void parallel_quicksort(int pivot, int high, double *list, int lower_bound)
+static void parallel_quicksort(int pivot, int high, float *list, int lower_bound)
 {
 	if (pivot >= high)
 		return;
@@ -125,10 +125,10 @@ int main(int argc, char *argv[])
 	omp_set_num_threads(numWorkers);
 
 	/* Initialize list */
-	double *mainList;
-	double *copyList;
-	mainList = (double *)malloc(sizeof(double) * length);
-	copyList = (double *)malloc(sizeof(double) * length);
+	float *mainList;
+	float *copyList;
+	mainList = (float *)malloc(sizeof(float) * length);
+	copyList = (float *)malloc(sizeof(float) * length);
 
 	if (mainList == NULL || copyList == NULL)
 	{
