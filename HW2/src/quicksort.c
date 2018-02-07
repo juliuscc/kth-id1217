@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 		mainArray[i] = drand(0.0, 100.0);
 
 	printf("Sorting list...\n");
-	printf("Sorting list took %g seconds\n", oneIteration(mainArray, lengths[0]));
+	printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
 
 	// 	/*
 	//      * Quick sort using OMP Task
