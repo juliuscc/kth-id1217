@@ -102,8 +102,61 @@ double oneIteration(float *originalArray, int length)
 	return end_time - start_time;
 }
 
+/* Swap function for bubble sort */
+void swap(double *xp, double *yp)
+{
+	double temp = *xp;
+	*xp = *yp;
+	*yp = temp;
+}
+
+/* An optimized version of bubble sort */
+void sort(double arr[])
+{
+	int i, j;
+	bool swapped;
+
+	int n = sizeof(arr) / sizeof(arr[0]);
+
+	for (i = 0; i < n - 1; i++)
+	{
+		swapped = false;
+		for (j = 0; j < n - i - 1; j++)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				swap(&arr[j], &arr[j + 1]);
+				swapped = true;
+			}
+		}
+
+		// IF no two elements were swapped by inner loop, then break
+		if (swapped == false)
+			break;
+	}
+}
+
+double medianTime(float *originalArray, int numWorkers, int length)
+{
+	int i;
+	int iterations = 10;
+	double times[iterations];
+
+	/* Set threads */
+	omp_set_num_threads(numWorkers);
+
+	/* Run interations */
+	for (i = 0; i < iterations; i++)
+		times[i] = oneIteration(&originalArray[0], length);
+
+	/* Calc median */
+	sort(times);
+	return times[iterations / 2];
+}
+
 int main(int argc, char *argv[])
 {
+	omp_set_dynamic(0);
 	int workers[6] = {1, 2, 4, 8, 12, 24};
 	int lengths[3] = {100000, 1000000, 10000000};
 	int maxLength = lengths[sizeof(lengths) / sizeof(int) - 1];
@@ -120,24 +173,19 @@ int main(int argc, char *argv[])
 	for (i = 0; i < maxLength; i++)
 		mainArray[i] = drand(0.0, 100.0);
 
-	printf("Sorting list...\n");
-	printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
+	/* Do work */
+	// printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
 
+	// printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
+	// printf("Lengts of list = [100000, 1000000, 10000000]\n");
+	// printf("Table:\n");
+	// printf("|Workers \\ Length|     100000    |    1000000    |    10000000   |\n");
+	// printf("|---------------|---------------|---------------|---------------|\n");
+
+	printf("Median time is %g seconds", medianTime(&mainArray[0], workers[0], lengths[0]));
+
+	/* Free main array and return */
 	free(mainArray);
-	// 	/*
-	//      * Quick sort using OMP Task
-	//      */
-	// 	omp_set_num_threads(pthr);
-	// 	omp_set_dynamic(0);
-	// 	start_time = omp_get_wtime();
-	// #pragma omp parallel
-	// 	{
-	// #pragma omp single nowait
-	// 		par_quick_sort(0, N - 1, &Data[0], low_limit);
-	// 	}
-	// 	end_time = omp_get_wtime();
-	// 	printf("Parallel quick_sort() Time: %g seconds\n", end_time - start_time);
-
 	return 0;
 }
 
