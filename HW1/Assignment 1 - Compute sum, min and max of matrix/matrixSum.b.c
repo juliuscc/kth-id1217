@@ -134,6 +134,7 @@ int main(int argc, char *argv[])
 
 	/* get end time */
 	end_time = read_timer();
+
 	/* print results */
 	int total = mainResult.total;
 	int max = matrix[mainResult.max_i][mainResult.max_j];
@@ -141,8 +142,8 @@ int main(int argc, char *argv[])
 
 #ifndef STRIPPEDPRINT
 	printf("The total is %d\n", total);
-	printf("The max element is %d, at position: (%d;%d)\n", max.val, max.i_pos + 1, max.j_pos + 1);
-	printf("The min element is %d, at position: (%d;%d)\n", min.val, min.i_pos + 1, min.j_pos + 1);
+	printf("The max element is %d, at position: (%d;%d)\n", max, mainResult.max_i + 1, mainResult.max_j + 1);
+	printf("The min element is %d, at position: (%d;%d)\n", min, mainResult.min_i + 1, mainResult.min_j + 1);
 	printf("The execution time is %g sec\n", end_time - start_time);
 #endif
 #ifdef STRIPPEDPRINT

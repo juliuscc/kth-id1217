@@ -3,7 +3,7 @@ LIBS = -lpthread -lm
 CFLAGS = -O3
 
 TARGETS = compute_pi
-DEFINES = STRIPPEDPRINT
+DEFINES = NONE
 
 compute_pi: compute_pi.c
 	$(CC) $(CFLAGS) -D $(DEFINES) -o $@.o $@.c $(LIBS)

@@ -54,6 +54,7 @@ pthread_mutex_t pi_lock, np_lock;
 
 void *calcArea(void *arg)
 {
+	int ok;
 	/* get task */
 	task *t = (task *)arg;
 
@@ -97,7 +98,8 @@ void *calcArea(void *arg)
 			--np;
 			pthread_mutex_unlock(&np_lock);
 			pthread_t new_thread;
-			pthread_create(&new_thread, NULL, calcArea, (void *)left_task);
+			ok = pthread_create(&new_thread, NULL, calcArea, (void *)left_task);
+			printf("Pthread create returned: %d\n", ok);
 
 			/* we also calculate area on this thread */
 			calcArea((void *)right_task);
