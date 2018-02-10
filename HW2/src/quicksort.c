@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
 {
 	omp_set_dynamic(0);
 	int workers[6] = {1, 2, 4, 8, 12, 24};
-	int lengths[3] = {100000, 1000000, 10000000};
+	int lengths[4] = {100000, 1000000, 10000000, 100000000};
 	int maxLength = lengths[sizeof(lengths) / sizeof(int) - 1];
 
 	/* Init main array */
@@ -192,8 +192,8 @@ int main(int argc, char *argv[])
 	printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
 	printf("Lengths of list = [100000, 1000000, 10000000]\n");
 	printf("Table:\n");
-	printf("|Workers\\Length |     100000    |    1000000    |    10000000   |\n");
-	printf("|---------------|---------------|---------------|---------------|\n");
+	printf("|Workers\\Length |     100000    |    1000000    |    10000000   |   100000000   |\n");
+	printf("|---------------|---------------|---------------|---------------|---------------|\n");
 
 	/* Run benchmark */
 	for (i = 0; i < sizeof(workers) / sizeof(workers[0]); i++)

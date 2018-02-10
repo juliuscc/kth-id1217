@@ -51,3 +51,5 @@ benchmark-matrixSum-float: matrixSum.c.float
 benchmark-quicksort: quicksort
 	@mkdir -p $(RESULT)
 	$(BUILD)/$<.o > $(RESULT)/$@.md
+
+benchmark: benchmark-matrixSum benchmark-matrixSum-float benchmark-quicksort
