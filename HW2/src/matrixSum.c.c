@@ -81,12 +81,10 @@ void swap(double *xp, double *yp)
 }
 
 // An optimized version of Bubble Sort
-void sort(double arr[])
+void sort(double arr[], int n)
 {
 	int i, j;
 	bool swapped;
-
-	int n = sizeof(arr) / sizeof(arr[0]);
 
 	for (i = 0; i < n - 1; i++)
 	{
@@ -130,7 +128,7 @@ double medianTime(int numWorkers, int size)
 		times[i] = oneIteration(size);
 	}
 	// sort times
-	sort(times);
+	sort(times, iterations);
 	return times[iterations / 2];
 }
 

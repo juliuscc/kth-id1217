@@ -9,67 +9,63 @@ double drand(double low, double high)
 	return ((double)rand() * (high - low)) / (double)RAND_MAX + low;
 }
 
-static int
-partition(int p, int r, float *data)
+/* When list gets small */
+static void insertionSort(float arr[], int n)
 {
-	float x = data[p];
-	int k = p;
-	int l = r + 1;
-	float t;
-	while (1)
+	int i, j;
+	float temp;
+	for (i = 1; i < n; i++)
 	{
-		do
+		temp = arr[i];
+		j = i - 1;
+
+		while (j >= 0 && arr[j] > temp)
+		{
+			arr[j + 1] = arr[j];
+			j = j - 1;
+		}
+		arr[j + 1] = temp;
+	}
+}
+
+/* Meat of quick sort. Partitioning */
+static int partition(int pivot_index, int high, float *data)
+{
+	float pivot = data[pivot_index];
+	int k = pivot_index + 1;
+	int l = high;
+	float temp;
+
+	while (k < l)
+	{
+		temp = data[k];
+		data[k] = data[l];
+		data[l] = temp;
+		while (data[k] <= pivot)
 			k++;
-		while ((data[k] <= x) && (k < r));
-		do
+		while (data[l] > pivot)
 			l--;
-		while (data[l] > x);
-		while (k < l)
-		{
-			t = data[k];
-			data[k] = data[l];
-			data[l] = t;
-			do
-				k++;
-			while (data[k] <= x);
-			do
-				l--;
-			while (data[l] > x);
-		}
-		t = data[p];
-		data[p] = data[l];
-		data[l] = t;
-		return l;
 	}
+	data[pivot_index] = data[l];
+	data[l] = pivot;
+	return l;
 }
 
-static void
-seq_quick_sort(int p, int r, float *data)
+/* The parallel quicksort */
+static void quicksort(int pivot, int high, float *list, int low_limit)
 {
-	if (p < r)
-	{
-		int q = partition(p, r, data);
-		seq_quick_sort(p, q - 1, data);
-		seq_quick_sort(q + 1, r, data);
-	}
-}
+	if (pivot >= high)
+		return;
 
-static void
-par_quick_sort(int p, int r, float *data, int low_limit)
-{
-	if (p < r)
-	{
-		if ((r - p) < low_limit) // Optimization. Sort small arrays sequentially
-			seq_quick_sort(p, r, data);
-		else
-		{
-			int q = partition(p, r, data);
+	if ((high - pivot) < low_limit)
+		return insertionSort(&list[pivot], high - pivot);
+
+	int mid = partition(pivot, high, list);
+
 #pragma omp task
-			par_quick_sort(p, q - 1, data, low_limit);
+	quicksort(pivot, mid - 1, list, low_limit);
 #pragma omp task
-			par_quick_sort(q + 1, r, data, low_limit);
-		}
-	}
+	quicksort(mid + 1, high, list, low_limit);
 }
 
 /* Do one iteration and measure the time it took */
@@ -94,9 +90,26 @@ double oneIteration(float *originalArray, int length)
 #pragma omp parallel
 	{
 #pragma omp single nowait
-		par_quick_sort(0, length - 1, &tempArray[0], 1000);
+		quicksort(0, length - 1, &tempArray[0], 1000);
 	}
 	end_time = omp_get_wtime();
+
+#ifdef RUNONCE
+	printf("Unsorted list: [");
+	for (i = 0; i < length - 1; i++)
+	{
+		printf("%f, ", originalArray[i]);
+	}
+	printf("%f]\n", originalArray[length - 1]);
+
+	printf("Sorted list: [");
+	for (i = 0; i < length - 1; i++)
+	{
+		printf("%f, ", tempArray[i]);
+	}
+	printf("%f]\n", tempArray[length - 1]);
+
+#endif
 
 	/* Free the array and return the time passed sorting it */
 	free(tempArray);
@@ -112,12 +125,10 @@ void swap(double *xp, double *yp)
 }
 
 /* An optimized version of bubble sort */
-void sort(double arr[])
+void sort(double arr[], int n)
 {
 	int i, j;
 	bool swapped;
-
-	int n = sizeof(arr) / sizeof(arr[0]);
 
 	for (i = 0; i < n - 1; i++)
 	{
@@ -151,7 +162,7 @@ double medianTime(float *originalArray, int numWorkers, int length)
 		times[i] = oneIteration(&originalArray[0], length);
 
 	/* Calc median */
-	sort(times);
+	sort(times, iterations);
 	return times[iterations / 2];
 }
 
@@ -174,12 +185,12 @@ int main(int argc, char *argv[])
 	for (i = 0; i < maxLength; i++)
 		mainArray[i] = drand(0.0, 100.0);
 
-	/* Do work */
-	// printf("Sorting list took %g seconds\n", oneIteration(&mainArray[0], lengths[0]));
-
+#ifdef RUNONCE
+	oneIteration(&mainArray[0], 10);
+#else
 	/* Print start stuff */
 	printf("\nWorkers = [1, 2, 4, 8, 12, 24]\n");
-	printf("Lengts of list = [100000, 1000000, 10000000]\n");
+	printf("Lengths of list = [100000, 1000000, 10000000]\n");
 	printf("Table:\n");
 	printf("|Workers\\Length |     100000    |    1000000    |    10000000   |\n");
 	printf("|---------------|---------------|---------------|---------------|\n");
@@ -194,193 +205,8 @@ int main(int argc, char *argv[])
 		}
 		printf("|\n");
 	}
-
+#endif
 	/* Free main array and return */
 	free(mainArray);
 	return 0;
 }
-
-// #include <omp.h>
-// #include <stdlib.h>
-// #include <stdio.h>
-
-// #define MAXLENGTH 100000  /* Maximum length of list */
-// #define MAXWORKERS 24	 /* Maximum number of workers */
-// #define MINLOWERBOUND 100 /* Minimum lower bound */
-
-// /* Helper functions */
-// float drand(float low, float high)
-// {
-// 	return ((float)rand() * (high - low)) / (float)RAND_MAX + low;
-// }
-
-// static void copy(float mainList[], float copyList[])
-// {
-// 	int i;
-// 	for (i = 0; i < sizeof(copyList) / sizeof(copyList[0]); i++)
-// 	{
-// 		copyList[i] = mainList[i];
-// 	}
-// }
-
-// /* Insertion sort is effective on smaller lists */
-// static void insertionSort(float arr[], int n)
-// {
-// 	int i, key, j;
-// 	for (i = 1; i < n; i++)
-// 	{
-// 		key = arr[i];
-// 		j = i - 1;
-
-// 		while (j >= 0 && arr[j] > key)
-// 		{
-// 			arr[j + 1] = arr[j];
-// 			j = j - 1;
-// 		}
-// 		arr[j + 1] = key;
-// 	}
-// }
-
-// /* Partition code for quick sort */
-// static int
-// partition(int p, int r, float *data)
-// {
-// 	float x = data[p];
-// 	int k = p;
-// 	int l = r + 1;
-// 	float t;
-// 	while (1)
-// 	{
-// 		do
-// 			k++;
-// 		while ((data[k] <= x) && (k < r));
-// 		do
-// 			l--;
-// 		while (data[l] > x);
-// 		while (k < l)
-// 		{
-// 			t = data[k];
-// 			data[k] = data[l];
-// 			data[l] = t;
-// 			do
-// 				k++;
-// 			while (data[k] <= x);
-// 			do
-// 				l--;
-// 			while (data[l] > x);
-// 		}
-// 		t = data[p];
-// 		data[p] = data[l];
-// 		data[l] = t;
-// 		return l;
-// 	}
-// }
-
-// static void sequential_quicksort(int pivot, int high, float *list, int lower_bound)
-// {
-// 	if (pivot >= high)
-// 		return;
-
-// 	int mid = partition(pivot, high, list);
-// 	sequential_quicksort(pivot, mid - 1, list, lower_bound);
-// 	sequential_quicksort(mid + 1, high, list, lower_bound);
-// }
-
-// /* Parallel code for quick sort */
-// static void parallel_quicksort(int pivot, int high, float *list, int lower_bound)
-// {
-// 	if (pivot >= high)
-// 		return;
-
-// 	if ((high - pivot) < lower_bound)
-// 		return sequential_quicksort(pivot, high, list, lower_bound);
-
-// 	int mid = partition(pivot, high, list);
-
-// #pragma omp task
-// 	parallel_quicksort(pivot, mid - 1, list, lower_bound);
-// #pragma omp task
-// 	parallel_quicksort(mid + 1, high, list, lower_bound);
-// }
-
-// /* Main: sets up all parameters */
-// int main(int argc, char *argv[])
-// {
-// 	/* Read command line args if any */
-// 	int length = (argc > 1) ? atoi(argv[1]) : MAXLENGTH;
-// 	int numWorkers = (argc > 2) ? atoi(argv[2]) : MAXWORKERS;
-// 	int lower_bound = (argc > 3) ? atoi(argv[3]) : MINLOWERBOUND;
-
-// 	/* Limit arguments to valid args */
-// 	// if (length > MAXLENGTH)
-// 	// 	length = MAXLENGTH;
-// 	// if (numWorkers > MAXWORKERS)
-// 	// 	numWorkers = MAXWORKERS;
-// 	// if (lower_bound < MINLOWERBOUND)
-// 	// 	lower_bound = MINLOWERBOUND;
-
-// 	printf("List lenght: %d\n", length);
-// 	printf("Number of workers: %d\n", numWorkers);
-// 	printf("Lower bound where insertion sort begins: %d\n\n", lower_bound);
-
-// 	/* Set number of threads */
-// 	omp_set_num_threads(numWorkers);
-
-// 	/* Initialize list */
-// 	float *mainList;
-// 	float *copyList;
-// 	mainList = (float *)malloc(sizeof(float) * length);
-// 	copyList = (float *)malloc(sizeof(float) * length);
-
-// 	if (mainList == NULL || copyList == NULL)
-// 	{
-// 		printf("Error\n");
-// 		exit(1);
-// 	}
-
-// 	int i;
-// 	for (i = 0; i < length; i++)
-// 	{
-// 		// mainList[i] = drand(0.0, 100.0);
-// 		mainList[i] = 1.1 * rand() * 5000 / RAND_MAX;
-// 	}
-
-// 	/* Keep original list untouched */
-// 	for (i = 0; i < length; i++)
-// 	{
-// 		copyList[i] = mainList[i];
-// 	}
-
-// #ifdef VERBOSE
-// 	printf("Unsorted list: [");
-// 	for (i = 0; i < length - 1; i++)
-// 	{
-// 		printf("%f, ", copyList[i]);
-// 	}
-// 	printf("%f]\n", copyList[length - 1]);
-// #endif
-
-// 	/* Start sorting list */
-// 	double start_time, end_time;
-// 	start_time = omp_get_wtime();
-// #pragma omp parallel
-// 	{
-// #pragma single nowait
-// 		{
-// 			parallel_quicksort(0, length - 1, &copyList[0], lower_bound);
-// 		}
-// 	}
-// 	end_time = omp_get_wtime();
-
-// #ifdef VERBOSE
-// 	printf("Sorted list: [");
-// 	for (i = 0; i < length - 1; i++)
-// 	{
-// 		printf("%f, ", copyList[i]);
-// 	}
-// 	printf("%f]\n", copyList[length - 1]);
-// #endif
-
-// 	printf("Sorted in %g seconds\n", end_time - start_time);
-// 	return 0;
-// }

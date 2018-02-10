@@ -1,4 +1,4 @@
-CC = gcc
+CC = gcc-mp-7
 CFLAGS = -O3
 LIBS = -fopenmp
 
