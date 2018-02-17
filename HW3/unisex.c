@@ -8,9 +8,9 @@
 #include <stdbool.h>
 #include <semaphore.h>
 
-#define MAXNUMBEROFMEN 50   /* maximum number of men */
-#define MAXNUMBEROFWOMEN 50 /* maximum number of women */
-#define MAXVISITS 20		/* maximum number of visits tp bath each person makes */
+#define MAXNUMBEROFMEN 5   /* maximum number of men */
+#define MAXNUMBEROFWOMEN 5 /* maximum number of women */
+#define MAXVISITS 20	   /* maximum number of visits tp bath each person makes */
 
 #define GRN "\x1B[32m"
 #define YEL "\x1B[33m"
