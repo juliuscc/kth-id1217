@@ -151,17 +151,17 @@ int main()
 	/* Get arguments */
 	while (numMen <= 0 || numMen > MAXNUMBEROFMEN)
 	{
-		printf("Enter the number men: (max %d) ", MAXNUMBEROFMEN);
+		printf("Enter the number of men: (max %d) ", MAXNUMBEROFMEN);
 		scanf("%d", &numMen);
 	}
 	while (numWomen <= 0 || numWomen > MAXNUMBEROFWOMEN)
 	{
-		printf("Enter the number women: (max %d) ", MAXNUMBEROFWOMEN);
+		printf("Enter the number of women: (max %d) ", MAXNUMBEROFWOMEN);
 		scanf("%d", &numWomen);
 	}
 	while (numVisits <= 0 || numVisits > MAXVISITS)
 	{
-		printf("Enter the number visits: (max %d) ", MAXVISITS);
+		printf("Enter the number of visits per person: (max %d) ", MAXVISITS);
 		scanf("%d", &numVisits);
 	}
 	printf("\n");
