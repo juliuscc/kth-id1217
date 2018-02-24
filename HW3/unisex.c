@@ -120,7 +120,7 @@ void *Woman(void *arg)
 		}
 
 		/* Go to bathroom */
-		printf("🚺  %d enters the bathroom. Visit:" YEL "%d\n" RESET, id, i + 1);
+		printf("🚺  %d enters the bathroom. Visit: " YEL "%d\n" RESET, id, i + 1);
 		sleep(rand() % 3);
 
 		/* What to do after finished with bathroom visit */
