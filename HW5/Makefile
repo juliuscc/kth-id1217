@@ -14,15 +14,7 @@ DEFINES = NONE
 all: $(TARGETS)
 .PHONY: all
 
-run-centralized: centralized
-	mpiexec -np 4 $(BUILD)/centralized
-
-run-symmetric: symmetric
-	mpiexec -np 4 $(BUILD)/symmetric
-
-run-ring: ring
-	mpiexec -np 4 $(BUILD)/ring
-
+# Build code
 centralized: $(SOURCE)/centralized.c
 	@mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -D$(DEFINES) -o $(BUILD)/$@ $(SOURCE)/$@.c $(LIBS)
@@ -35,10 +27,16 @@ ring: $(SOURCE)/ring.c
 	@mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -D$(DEFINES) -o $(BUILD)/$@ $(SOURCE)/$@.c $(LIBS)
 
-# benchmark: compute_pi
-# 	rm -rf results \
-# 	&& mkdir results \
-# 	&& ./benchmark.sh ./compute_pi.o results/compute_pi.results
-	
+# Run code
+run-centralized: centralized
+	mpiexec -np 4 $(BUILD)/centralized
+
+run-symmetric: symmetric
+	mpiexec -np 4 $(BUILD)/symmetric
+
+run-ring: ring
+	mpiexec -np 4 $(BUILD)/ring
+
+# Clean code
 clean:
 	rm -f *.o *.exe $(TARGETS)
