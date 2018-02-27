@@ -1,0 +1,8 @@
+# set title 'Ring benchmark'
+# set xlabel 'Number of processes'
+# set ylabel 'Time'
+# plot 'ring-benchmark-result.dat' using 1:2 with linespoints title '1 run', 'ring-benchmark-result.dat' using 1:3 with linespoints title '2 runs', 'ring-benchmark-result.dat' using 1:4 with linespoints title '3 runs'
+2 0.000515 0.000497 0.003318  
+4 0.000529 0.000671 0.000689  
+6 0.005779 0.00476 0.008797  
+8 0.001067 0.008857 0.00837
